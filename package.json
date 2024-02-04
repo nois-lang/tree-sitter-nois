@@ -1,15 +1,19 @@
 {
+    "$schema": "https://json.schemastore.org/package.json",
     "name": "tree-sitter-nois",
     "version": "0.0.1",
     "description": "Tree-sitter parser for Nois",
     "main": "bindings/node",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "build": "tree-sitter generate",
+        "test": "tree-sitter test"
     },
     "author": "",
     "license": "MIT",
     "dependencies": {
-        "nan": "2.18.0",
+        "nan": "2.18.0"
+    },
+    "devDependencies": {
         "tree-sitter-cli": "0.20.8"
     }
 }
