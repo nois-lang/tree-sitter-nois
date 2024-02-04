@@ -10,6 +10,7 @@ module.exports = grammar({
         [$.subExpr],
         [$.posCall, $.namedCall]
     ],
+    extras: _ => [token(seq('//', /.*/)), /\s/],
     rules: {
         // module                ::= use-stmt* statement*
         module: $ => seq(repeat($.useStatement), repeat($.statement)),
