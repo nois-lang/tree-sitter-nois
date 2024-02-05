@@ -1614,11 +1614,7 @@
           "named": true
         },
         {
-          "type": "params",
-          "named": true
-        },
-        {
-          "type": "variant",
+          "type": "variantParams",
           "named": true
         }
       ]

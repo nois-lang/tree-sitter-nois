@@ -1,8 +1,11 @@
 module.exports = grammar({
     name: 'nois',
 
-    precedences: $ => [[$.posCall, $.namedCall]],
-    conflicts: $ => [[$.identifier], [$.typeDef], [$.identifier, $._patternExpr], [$.variant]],
+    precedences: $ => [
+        [$.posCall, $.namedCall],
+        [$.useList, $.NAME]
+    ],
+    conflicts: $ => [[$.identifier, $._patternExpr]],
     extras: _ => [/\s/, token(seq('//', /.*/))],
     word: $ => $.NAME,
     rules: {
@@ -39,7 +42,9 @@ module.exports = grammar({
         implFor: $ => seq($.FOR_KEYWORD, $.identifier),
         //   type-def            ::= TYPE-KEYWORD NAME generics? (variant-list | variant-params)?
         typeDef: $ =>
-            seq($.TYPE_KEYWORD, $.NAME, optional($.generics), optional(choice($.variantList, $.variantParams))),
+            prec.left(
+                seq($.TYPE_KEYWORD, $.NAME, optional($.generics), optional(choice($.variantList, $.variantParams)))
+            ),
         //     variant-params    ::= O-PAREN (field-def (COMMA field-def)*)? COMMA? C-PAREN
         variantParams: $ => seq($.O_PAREN, optional(seq($.fieldDef, repeat(seq($.COMMA, $.fieldDef)))), $.C_PAREN),
         //       field-def       ::= NAME type-annot
@@ -48,7 +53,7 @@ module.exports = grammar({
         variantList: $ =>
             seq($.O_BRACE, optional(seq($.variant, repeat(($.COMMA, $.variant)), optional($.COMMA))), $.C_BRACE),
         //       variant         ::= NAME variant-params?
-        variant: $ => seq($.NAME, optional(seq($.variant, $.params))),
+        variant: $ => seq($.NAME, optional($.variantParams)),
         //   return-stmt         ::= RETURN-KEYWORD expr
         returnStmt: $ => seq($.RETURN_KEYWORD, $.expr),
         //   break-stmt          ::= BREAK-KEYWORD
@@ -155,7 +160,7 @@ module.exports = grammar({
         //         named-arg     ::= NAME COLON expr
         namedArg: $ => seq($.NAME, $.COLON, $.expr),
         // identifier            ::= (NAME COLON COLON)* NAME type-args?
-        identifier: $ => seq(repeat(seq($.NAME, $.COLON, $.COLON)), $.NAME, optional($.typeArgs)),
+        identifier: $ => prec.left(seq(repeat(seq($.NAME, $.COLON, $.COLON)), $.NAME, optional($.typeArgs))),
         //   type-args           ::= O-ANGLE (type (COMMA type)* COMMA?)? C-ANGLE
         typeArgs: $ =>
             seq($.O_ANGLE, optional(seq($.type, repeat(seq($.COMMA, $.type)), optional($.COMMA))), $.C_ANGLE),
