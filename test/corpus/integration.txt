@@ -1,6 +1,6 @@
-====
+===
 integration
-====
+===
 
 // import
 use std::io::Display
@@ -315,8 +315,7 @@ fn main() {
                   (identifier
                     (NAME))))))
           (C_PAREN)))
-      (ERROR
-        (COMMA))
+      (COMMA)
       (variant
         (NAME)
         (variantParams

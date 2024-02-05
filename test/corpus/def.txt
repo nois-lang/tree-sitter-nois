@@ -1,6 +1,6 @@
-====
+===
 fnDef
-====
+===
 
 fn main<T: Bar + Baz>(a: T): Foo<T> {}
 
@@ -51,9 +51,9 @@ fn main<T: Bar + Baz>(a: T): Foo<T> {}
       (O_BRACE)
       (C_BRACE))))
 
-====
+===
 traitDef
-====
+===
 
 trait Display {
     fn fmt(self): String
@@ -84,9 +84,9 @@ trait Display {
                 (NAME))))))
       (C_BRACE))))
 
-====
+===
 typeDef
-====
+===
 
 type Vec2(x: Float, y: Float)
 
@@ -116,3 +116,59 @@ type Vec2(x: Float, y: Float)
               (identifier
                 (NAME))))))
       (C_PAREN))))
+
+===
+typeDef variant
+===
+
+type Shape {
+    Rectangle(width: Num, height: Num),
+    Circle(radius: Num),
+}
+
+---
+
+(module
+  (typeDef
+    (TYPE_KEYWORD)
+    (NAME)
+    (variantList
+      (O_BRACE)
+      (variant
+        (NAME)
+        (variantParams
+          (O_PAREN)
+          (fieldDef
+            (NAME)
+            (typeAnnot
+              (COLON)
+              (type
+                (typeBounds
+                  (identifier
+                    (NAME))))))
+          (COMMA)
+          (fieldDef
+            (NAME)
+            (typeAnnot
+              (COLON)
+              (type
+                (typeBounds
+                  (identifier
+                    (NAME))))))
+          (C_PAREN)))
+      (COMMA)
+      (variant
+        (NAME)
+        (variantParams
+          (O_PAREN)
+          (fieldDef
+            (NAME)
+            (typeAnnot
+              (COLON)
+              (type
+                (typeBounds
+                  (identifier
+                    (NAME))))))
+          (C_PAREN)))
+      (COMMA)
+      (C_BRACE))))

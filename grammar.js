@@ -48,7 +48,7 @@ module.exports = grammar({
         fieldDef: $ => seq($.NAME, $.typeAnnot),
         //     variant-list      ::= O-BRACE (variant (COMMA variant)* COMMA?)? C-BRACE
         variantList: $ =>
-            seq($.O_BRACE, optional(seq($.variant, repeat(($.COMMA, $.variant)), optional($.COMMA))), $.C_BRACE),
+            seq($.O_BRACE, optional(seq($.variant, repeat(seq($.COMMA, $.variant)), optional($.COMMA))), $.C_BRACE),
         //       variant         ::= NAME variant-params?
         variant: $ => seq($.NAME, optional($.variantParams)),
         //   return-stmt         ::= RETURN-KEYWORD expr

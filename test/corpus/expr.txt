@@ -1,6 +1,6 @@
-====
+===
 infix expr
-====
+===
 
 1 + 2
 
@@ -15,9 +15,9 @@ infix expr
     (subExpr
       (INT))))
 
-====
+===
 infix chain expr
-====
+===
 
 1 + 2 * 3
 
@@ -36,9 +36,9 @@ infix chain expr
     (subExpr
       (INT))))
 
-====
+===
 prefix expr
-====
+===
 
 -1
 
@@ -51,9 +51,9 @@ prefix expr
         (MINUS))
       (INT))))
 
-====
+===
 infix prefix expr
-====
+===
 
 -1 + 2
 
@@ -74,7 +74,6 @@ infix prefix expr
 use expr
 ===
 
-// import
 use std::io::Display
 
 ---
