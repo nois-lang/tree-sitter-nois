@@ -15,5 +15,18 @@
     },
     "devDependencies": {
         "tree-sitter-cli": "0.20.8"
-    }
+    },
+    "tree-sitter": [
+        {
+            "scope": "source.no",
+            "file-types": [
+                "no"
+            ],
+            "highlights": [
+                "queries/highlights.scm"
+            ],
+            "locals": [],
+            "tags": []
+        }
+    ]
 }
