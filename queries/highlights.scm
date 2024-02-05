@@ -5,10 +5,10 @@
 
 (param (pattern (NAME) @variable.parameter))
 
-((param (pattern (NAME) @variable.builtin) 
- (#match? @variable.builtin "self")))
-((identifier (NAME) @variable.builtin) 
+(param (pattern (NAME) @variable.builtin) 
  (#match? @variable.builtin "self"))
+(identifier (NAME) @variable.builtin) 
+ (#match? @variable.builtin "self")
 
 (fnDef (NAME) @function)
 
