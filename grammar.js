@@ -157,7 +157,7 @@ module.exports = grammar({
         //         named-arg     ::= NAME COLON expr
         namedArg: $ => seq($.NAME, $.COLON, $.expr),
         // identifier            ::= (NAME COLON COLON)* NAME type-args?
-        identifier: $ => prec.right(seq(repeat(seq($.NAME, $.COLON, $.COLON)), $.NAME, optional($.typeArgs))),
+        identifier: $ => prec.left(seq(repeat(seq($.NAME, $.COLON, $.COLON)), $.NAME, optional($.typeArgs))),
         //   type-args           ::= O-ANGLE (type (COMMA type)* COMMA?)? C-ANGLE
         typeArgs: $ =>
             seq($.O_ANGLE, optional(seq($.type, repeat(seq($.COMMA, $.type)), optional($.COMMA))), $.C_ANGLE),

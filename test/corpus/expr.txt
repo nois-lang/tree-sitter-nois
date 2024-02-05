@@ -1,5 +1,5 @@
 ===
-infix expr
+expr infix +
 ===
 
 1 + 2
@@ -16,7 +16,25 @@ infix expr
       (INT))))
 
 ===
-infix chain expr
+expr infix <
+===
+
+d < 5
+
+---
+
+(module
+  (expr
+    (subExpr
+      (identifier
+        (NAME)))
+    (ltOp
+      (O_ANGLE))
+    (subExpr
+      (INT))))
+
+===
+expr infix chain
 ===
 
 1 + 2 * 3
@@ -37,7 +55,7 @@ infix chain expr
       (INT))))
 
 ===
-prefix expr
+expr prefix
 ===
 
 -1
@@ -71,7 +89,7 @@ infix prefix expr
       (INT))))
 
 ===
-use expr
+useExpr
 ===
 
 use std::io::Display
@@ -89,4 +107,3 @@ use std::io::Display
       (COLON)
       (COLON)
       (NAME))))
-

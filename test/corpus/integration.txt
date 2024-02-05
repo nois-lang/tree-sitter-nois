@@ -776,10 +776,11 @@ fn main() {
               (expr
                 (subExpr
                   (identifier
-                    (NAME))))
-              (ERROR
-                (O_ANGLE)
-                (INT))
+                    (NAME)))
+                (ltOp
+                  (O_ANGLE))
+                (subExpr
+                  (INT)))
               (block
                 (O_BRACE)
                 (expr
