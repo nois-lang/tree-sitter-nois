@@ -1,5 +1,6 @@
 {
   "name": "nois",
+  "word": "NAME",
   "rules": {
     "module": {
       "type": "SEQ",
@@ -2168,21 +2169,24 @@
           "value": "\""
         },
         {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "PATTERN",
-              "value": "(\\\\\\\\')"
-            },
-            {
-              "type": "PATTERN",
-              "value": "[^\\\\\\n\\r']"
-            },
-            {
-              "type": "PATTERN",
-              "value": "(\\\\[btnvfr\\\\'\"])"
-            }
-          ]
+          "type": "REPEAT",
+          "content": {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "PATTERN",
+                "value": "(\\\\\\\\')"
+              },
+              {
+                "type": "PATTERN",
+                "value": "[^\\\\\\n\\r']"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "_ESCAPE_SEQUENCE"
+              }
+            ]
+          }
         },
         {
           "type": "STRING",
@@ -2209,14 +2213,27 @@
               "value": "[^\\\\\\n\\r\"]"
             },
             {
-              "type": "PATTERN",
-              "value": "(\\\\[btnvfr\\\\'\"])"
+              "type": "SYMBOL",
+              "name": "_ESCAPE_SEQUENCE"
             }
           ]
         },
         {
           "type": "STRING",
           "value": "'"
+        }
+      ]
+    },
+    "_ESCAPE_SEQUENCE": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "PATTERN",
+          "value": "(\\\\[btnvfr\\\\'\"])"
+        },
+        {
+          "type": "PATTERN",
+          "value": "u[0-9a-fA-F]{4}"
         }
       ]
     },
@@ -2230,6 +2247,10 @@
     }
   },
   "extras": [
+    {
+      "type": "PATTERN",
+      "value": "\\s"
+    },
     {
       "type": "TOKEN",
       "content": {
@@ -2245,10 +2266,6 @@
           }
         ]
       }
-    },
-    {
-      "type": "PATTERN",
-      "value": "\\s"
     }
   ],
   "conflicts": [

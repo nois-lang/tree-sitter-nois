@@ -3,7 +3,8 @@ module.exports = grammar({
 
     precedences: $ => [[$.posCall, $.namedCall]],
     conflicts: $ => [[$.identifier], [$.typeDef], [$.identifier, $._patternExpr], [$.variant]],
-    extras: _ => [token(seq('//', /.*/)), /\s/],
+    extras: _ => [/\s/, token(seq('//', /.*/))],
+    word: $ => $.NAME,
     rules: {
         // module                ::= use-stmt* statement*
         module: $ => seq(repeat($.useStatement), repeat($._statement)),
@@ -265,28 +266,9 @@ module.exports = grammar({
         AT: _ => '@',
 
         NAME: _ => /[a-zA-Z]([a-zA-Z]|\d)*/,
-        STRING: _ =>
-            seq(
-                '"',
-                choice(
-                    /(\\\\')/,
-                    /[^\\\n\r']/,
-                    /(\\[btnvfr\\'"])/
-                    // /(\\u{[0-9a-fA-F]{1,4}})/
-                ),
-                '"'
-            ),
-        CHAR: _ =>
-            seq(
-                "'",
-                choice(
-                    /(\\\\")/,
-                    /[^\\\n\r"]/,
-                    /(\\[btnvfr\\'"])/
-                    // /(\\u{[0-9a-fA-F]{1,4}})/
-                ),
-                "'"
-            ),
+        STRING: $ => seq('"', repeat(choice(/(\\\\')/, /[^\\\n\r']/, $._ESCAPE_SEQUENCE)), '"'),
+        CHAR: $ => seq("'", choice(/(\\\\")/, /[^\\\n\r"]/, $._ESCAPE_SEQUENCE), "'"),
+        _ESCAPE_SEQUENCE: _ => choice(/(\\[btnvfr\\'"])/, /u[0-9a-fA-F]{4}/),
         INT: _ => /\d+/,
         FLOAT: _ => /((\d+(\.\d*)?e[+-]?\d+)|(\d+\.\d*)|(\d*\.\d+))/
     }
