@@ -172,3 +172,32 @@ type Shape {
           (C_PAREN)))
       (COMMA)
       (C_BRACE))))
+
+===
+varDef
+===
+
+let Vec2::Vec2(x) = vec
+
+---
+
+(module
+  (varDef
+    (LET_KEYWORD)
+    (pattern
+      (conPattern
+        (identifier
+          (NAME)
+          (COLON)
+          (COLON)
+          (NAME))
+        (conPatternParams
+          (O_PAREN)
+          (fieldPattern
+            (NAME))
+          (C_PAREN))))
+    (EQUALS)
+    (expr
+      (subExpr
+        (identifier
+          (NAME))))))

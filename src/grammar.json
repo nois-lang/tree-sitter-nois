@@ -1858,63 +1858,59 @@
       ]
     },
     "_patternExpr": {
-      "type": "PREC_LEFT",
-      "value": 0,
-      "content": {
-        "type": "CHOICE",
-        "members": [
-          {
-            "type": "SYMBOL",
-            "name": "NAME"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "conPattern"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "STRING"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "CHAR"
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "CHOICE",
-                "members": [
-                  {
-                    "type": "SYMBOL",
-                    "name": "_prefixOp"
-                  },
-                  {
-                    "type": "BLANK"
-                  }
-                ]
-              },
-              {
-                "type": "CHOICE",
-                "members": [
-                  {
-                    "type": "SYMBOL",
-                    "name": "INT"
-                  },
-                  {
-                    "type": "SYMBOL",
-                    "name": "FLOAT"
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "type": "SYMBOL",
-            "name": "hole"
-          }
-        ]
-      }
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "NAME"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "conPattern"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "STRING"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "CHAR"
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "_prefixOp"
+                },
+                {
+                  "type": "BLANK"
+                }
+              ]
+            },
+            {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "INT"
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "FLOAT"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "SYMBOL",
+          "name": "hole"
+        }
+      ]
     },
     "conPattern": {
       "type": "SEQ",
@@ -2284,7 +2280,12 @@
       "name": "_COMMENT"
     }
   ],
-  "conflicts": [],
+  "conflicts": [
+    [
+      "identifier",
+      "_patternExpr"
+    ]
+  ],
   "precedences": [
     [
       {

@@ -850,19 +850,17 @@ fn main() {
       (varDef
         (LET_KEYWORD)
         (pattern
-          (NAME))
-        (ERROR
-          (COLON))
-        (typeAnnot
-          (COLON)
-          (type
-            (typeBounds
-              (identifier
-                (NAME)))))
-        (ERROR
-          (O_PAREN)
-          (NAME)
-          (C_PAREN))
+          (conPattern
+            (identifier
+              (NAME)
+              (COLON)
+              (COLON)
+              (NAME))
+            (conPatternParams
+              (O_PAREN)
+              (fieldPattern
+                (NAME))
+              (C_PAREN))))
         (EQUALS)
         (expr
           (subExpr
@@ -871,25 +869,20 @@ fn main() {
       (varDef
         (LET_KEYWORD)
         (pattern
-          (NAME))
-        (ERROR
-          (COLON)
-          (typeAnnot
-            (COLON)
-            (type
-              (typeBounds
-                (identifier
-                  (NAME)))))
-          (O_PAREN)
-          (NAME))
-        (typeAnnot
-          (COLON)
-          (type
-            (typeBounds
-              (identifier
-                (NAME)))))
-        (ERROR
-          (C_PAREN))
+          (conPattern
+            (identifier
+              (NAME)
+              (COLON)
+              (COLON)
+              (NAME))
+            (conPatternParams
+              (O_PAREN)
+              (fieldPattern
+                (NAME)
+                (COLON)
+                (pattern
+                  (NAME)))
+              (C_PAREN))))
         (EQUALS)
         (expr
           (subExpr

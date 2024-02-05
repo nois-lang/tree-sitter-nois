@@ -1,8 +1,11 @@
 module.exports = grammar({
     name: 'nois',
 
-    precedences: $ => [[$.posCall, $.namedCall], [$.variantList, $._statement]],
-    conflicts: _ => [],
+    precedences: $ => [
+        [$.posCall, $.namedCall],
+        [$.variantList, $._statement]
+    ],
+    conflicts: $ => [[$.identifier, $._patternExpr]],
     extras: $ => [/\s/, $._COMMENT],
     word: $ => $.NAME,
     rules: {
@@ -212,16 +215,7 @@ module.exports = grammar({
         patternBind: $ => seq($.NAME, $.AT),
         //   pattern-expr        ::= NAME | con-pattern | STRING | CHAR | prefix-op? (INT | FLOAT) | hole
         _patternExpr: $ =>
-            prec.left(
-                choice(
-                    $.NAME,
-                    $.conPattern,
-                    $.STRING,
-                    $.CHAR,
-                    seq(optional($._prefixOp), choice($.INT, $.FLOAT)),
-                    $.hole
-                )
-            ),
+            choice($.NAME, $.conPattern, $.STRING, $.CHAR, seq(optional($._prefixOp), choice($.INT, $.FLOAT)), $.hole),
         //     con-pattern       ::= identifier con-pattern-params
         conPattern: $ => seq($.identifier, $.conPatternParams),
         //     con-pattern-parms ::= O-PAREN (field-pattern (COMMA field-pattern)*)? COMMA? C-PAREN
