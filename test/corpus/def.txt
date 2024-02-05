@@ -84,3 +84,35 @@ trait Display {
                 (NAME))))))
       (C_BRACE))))
 
+====
+type def
+====
+
+type Vec2(x: Float, y: Float)
+
+---
+
+(module
+  (typeDef
+    (TYPE_KEYWORD)
+    (NAME)
+    (variantParams
+      (O_PAREN)
+      (fieldDef
+        (NAME)
+        (typeAnnot
+          (COLON)
+          (type
+            (typeBounds
+              (identifier
+                (NAME))))))
+      (COMMA)
+      (fieldDef
+        (NAME)
+        (typeAnnot
+          (COLON)
+          (type
+            (typeBounds
+              (identifier
+                (NAME))))))
+      (C_PAREN))))

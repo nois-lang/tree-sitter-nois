@@ -1,7 +1,7 @@
 module.exports = grammar({
     name: 'nois',
 
-    precedences: $ => [[$.posCall, $.namedCall]],
+    precedences: $ => [[$.posCall, $.namedCall], [$.variantList, $._statement]],
     conflicts: _ => [],
     extras: $ => [/\s/, $._COMMENT],
     word: $ => $.NAME,
@@ -39,7 +39,7 @@ module.exports = grammar({
         implFor: $ => seq($.FOR_KEYWORD, $.identifier),
         //   type-def            ::= TYPE-KEYWORD NAME generics? (variant-list | variant-params)?
         typeDef: $ =>
-            prec.left(
+            prec.right(
                 seq($.TYPE_KEYWORD, $.NAME, optional($.generics), optional(choice($.variantList, $.variantParams)))
             ),
         //     variant-params    ::= O-PAREN (field-def (COMMA field-def)*)? COMMA? C-PAREN
@@ -157,7 +157,7 @@ module.exports = grammar({
         //         named-arg     ::= NAME COLON expr
         namedArg: $ => seq($.NAME, $.COLON, $.expr),
         // identifier            ::= (NAME COLON COLON)* NAME type-args?
-        identifier: $ => prec.left(seq(repeat(seq($.NAME, $.COLON, $.COLON)), $.NAME, optional($.typeArgs))),
+        identifier: $ => prec.right(seq(repeat(seq($.NAME, $.COLON, $.COLON)), $.NAME, optional($.typeArgs))),
         //   type-args           ::= O-ANGLE (type (COMMA type)* COMMA?)? C-ANGLE
         typeArgs: $ =>
             seq($.O_ANGLE, optional(seq($.type, repeat(seq($.COMMA, $.type)), optional($.COMMA))), $.C_ANGLE),

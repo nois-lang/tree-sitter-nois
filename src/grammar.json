@@ -504,7 +504,7 @@
       ]
     },
     "typeDef": {
-      "type": "PREC_LEFT",
+      "type": "PREC_RIGHT",
       "value": 0,
       "content": {
         "type": "SEQ",
@@ -1208,7 +1208,7 @@
       ]
     },
     "identifier": {
-      "type": "PREC_LEFT",
+      "type": "PREC_RIGHT",
       "value": 0,
       "content": {
         "type": "SEQ",
@@ -2285,6 +2285,16 @@
       {
         "type": "SYMBOL",
         "name": "namedCall"
+      }
+    ],
+    [
+      {
+        "type": "SYMBOL",
+        "name": "variantList"
+      },
+      {
+        "type": "SYMBOL",
+        "name": "_statement"
       }
     ]
   ],

@@ -155,21 +155,26 @@ fn main() {
       (NAME)))
   (typeDef
     (TYPE_KEYWORD)
-    (NAME))
-  (expr
-    (subExpr
+    (NAME)
+    (variantParams
       (O_PAREN)
-      (expr
-        (subExpr
-          (identifier
-            (NAME)
-            (COLON)
-            (ERROR
-              (NAME)
-              (COMMA)
-              (NAME))
-            (COLON)
-            (NAME))))
+      (fieldDef
+        (NAME)
+        (typeAnnot
+          (COLON)
+          (type
+            (typeBounds
+              (identifier
+                (NAME))))))
+      (COMMA)
+      (fieldDef
+        (NAME)
+        (typeAnnot
+          (COLON)
+          (type
+            (typeBounds
+              (identifier
+                (NAME))))))
       (C_PAREN)))
   (implDef
     (IMPL_KEYWORD)
@@ -772,11 +777,10 @@ fn main() {
                 (expr
                   (subExpr
                     (identifier
-                      (NAME)))
-                  (ltOp
-                    (O_ANGLE))
-                  (subExpr
-                    (INT)))
+                      (NAME))))
+                (ERROR
+                  (O_ANGLE)
+                  (INT))
                 (block
                   (O_BRACE)
                   (expr
