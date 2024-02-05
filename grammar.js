@@ -1,12 +1,9 @@
 module.exports = grammar({
     name: 'nois',
 
-    precedences: $ => [
-        [$.posCall, $.namedCall],
-        [$.useList, $.NAME]
-    ],
-    conflicts: $ => [[$.identifier, $._patternExpr]],
-    extras: _ => [/\s/, token(seq('//', /.*/))],
+    precedences: $ => [[$.posCall, $.namedCall]],
+    conflicts: _ => [],
+    extras: $ => [/\s/, $._COMMENT],
     word: $ => $.NAME,
     rules: {
         // module                ::= use-stmt* statement*
@@ -215,7 +212,16 @@ module.exports = grammar({
         patternBind: $ => seq($.NAME, $.AT),
         //   pattern-expr        ::= NAME | con-pattern | STRING | CHAR | prefix-op? (INT | FLOAT) | hole
         _patternExpr: $ =>
-            choice($.NAME, $.conPattern, $.STRING, $.CHAR, seq(optional($._prefixOp), choice($.INT, $.FLOAT)), $.hole),
+            prec.left(
+                choice(
+                    $.NAME,
+                    $.conPattern,
+                    $.STRING,
+                    $.CHAR,
+                    seq(optional($._prefixOp), choice($.INT, $.FLOAT)),
+                    $.hole
+                )
+            ),
         //     con-pattern       ::= identifier con-pattern-params
         conPattern: $ => seq($.identifier, $.conPatternParams),
         //     con-pattern-parms ::= O-PAREN (field-pattern (COMMA field-pattern)*)? COMMA? C-PAREN
@@ -275,6 +281,8 @@ module.exports = grammar({
         CHAR: $ => seq("'", choice(/(\\\\")/, /[^\\\n\r"]/, $._ESCAPE_SEQUENCE), "'"),
         _ESCAPE_SEQUENCE: _ => choice(/(\\[btnvfr\\'"])/, /u[0-9a-fA-F]{4}/),
         INT: _ => /\d+/,
-        FLOAT: _ => /((\d+(\.\d*)?e[+-]?\d+)|(\d+\.\d*)|(\d*\.\d+))/
+        FLOAT: _ => /((\d+(\.\d*)?e[+-]?\d+)|(\d+\.\d*)|(\d*\.\d+))/,
+
+        _COMMENT: _ => token(seq('//', /.*/))
     }
 })

@@ -70,3 +70,24 @@ infix prefix expr
     (subExpr
       (INT))))
 
+===
+use expr
+===
+
+// import
+use std::io::Display
+
+---
+
+(module
+  (useStatement
+    (USE_KEYWORD)
+    (useExpr
+      (NAME)
+      (COLON)
+      (COLON)
+      (NAME)
+      (COLON)
+      (COLON)
+      (NAME))))
+
