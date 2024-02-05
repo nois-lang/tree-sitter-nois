@@ -2,148 +2,33 @@
 integration
 ===
 
-// import
+// comment
+use pkg
 use std::io::Display
-
-// sum type
-type Vec2(x: Float, y: Float)
-
-// inherent impl
-impl Vec2 {
-    fn size(self): Float {
-        self.x ^ 2. + self.y ^ 2.
-    }
-}
-
-// impl
-impl Display for Vec2 {
-    fn fmt(self): String {
-        "(" + self.x + ", " + self.y + ")"
-    }
-}
-
-// variant type
-type Shape {
-    Rectangle(width: Num, height: Num),
-    Circle(radius: Num),
-}
-
-// trait
-trait Area {
-    fn area(self): Num
-}
-
-// impl for variant type
-impl Area for Shape {
-    fn area(self): Num {
-        match self {
-            Shape::Rectangle(width, height) { width * height }
-            Shape::Circle(radius) { math::pi * radius ^ 2 }
-        }
-    }
-}
-
-// function
-fn add(a: Int, b: Int): Int { a + b }
-
-// function generics and generic bounds
-fn foo<T: Add + Div>(a: T, b: T): T {
-    a.add(b).div(b)
-}
-
-fn main() {
-    // define variable
-    let n = 4
-    // type hint
-    let h: Int = 4
-
-    // literals
-    let i = 12
-    let f = 12.34
-    let c = 'a'
-    let s = "abc"
-    let b = true
-    // list literals
-    let l = [1, 2, 3]
-
-    // constructor
-    let vec = Vec2::Vec2(x: 2., y: 4.)
-
-    // field accessor
-    vec.x
-
-    // function call
-    println("hello")
-
-    // method call
-    vec.fmt()
-
-    // alternative call syntax
-    Vec2::fmt(vec)
-
-    // method call syntax for ambiguous methods
-    //Vec2::Display::fmt(vec)
-
-    // if
-    let d = if true { 4 } else { 2 + 6 }
-
-    // while loop
-    let e = while d < 5 {
-        a = a + 1
-    }
-
-    // for loop
-    let f = for g in [1, 2, 3] {
-        println(g)
-        g + 1
-    }
-
-    // destructuring
-    let Vec2::Vec2(x) = vec
-
-    // destructuring alias
-    let Vec2::Vec2(x: b) = vec
-
-    // match
-    let b = match 4 {
-        1 { "one" }
-        n if n % 2 == 0 {
-            if (n > 5) { "good" } else { "not good" }
-        }
-        _ { "whatever" }
-    }
-
-    // match type
-    let b = match vec {
-        Vec2::Vec2(x: 1, y: 1) { "one" }
-        Vec2::Vec2(x: 1) { "x one whatever" }
-        Vec2::Vec2(x) if x != 4 { format("x is {} not 4", x) }
-        _ { "whatever"}
-    }
-
-    // if let
-    if let Option(value) = Some(42) {
-        println("value is {}", value)
-    } else {
-        println("no value")
-    }
-
-    // closure
-    let square: |Num|: Num = |a| { a^2 }
-    let here = || { println("here") }
-
-    // fn reference
-    let p = println
-
-    // method reference
-    // equivalent to |v: Vec2| v.fmt()
-    let r = Vec2::fmt
+use std::iter::{Iter, peekableIter::PeekableIter}
+type Foo
+type Bar<T>(v: T)
+type V<T>{ A(), B(v: T) }
+trait Baz<U> { fn a(self): Unit fn f<T>(self): T {} }
+impl <T> Baz<Option<T>> for Bar<T> { fn f(self): T {} }
+fn foo<T: std::io::Display + U, U>(b: T): Option<U> {
+    let a = [1, "str", 'c', true, Option::None(), Option::Some(value: 1), Option::Some(2)]
+    let Foo::Foo(x) = Foo::Foo(4)
+    let b = if a.next().isSome() { a } else { [] }
+    let c = if let Option::Some(value) = a.next { value } else { panic("err") }
+    while a.count() < 5 + 3 { List::add(a, 8) }
+    for Option::Some(value: v) in a { println(a.x) }
+    match c.foo() { -5 if a.count() > 6 {} a @ V::B(v, o: _) {} V::B() {} "str" {} 'c' {} _ {} }
 }
 
 ---
 
 (module
   (COMMENT)
+  (useStatement
+    (USE_KEYWORD)
+    (useExpr
+      (NAME)))
   (useStatement
     (USE_KEYWORD)
     (useExpr
@@ -154,10 +39,37 @@ fn main() {
       (COLON)
       (COLON)
       (NAME)))
-  (COMMENT)
+  (useStatement
+    (USE_KEYWORD)
+    (useExpr
+      (NAME)
+      (COLON)
+      (COLON)
+      (NAME)
+      (COLON)
+      (COLON)
+      (useList
+        (O_BRACE)
+        (useExpr
+          (NAME))
+        (COMMA)
+        (useExpr
+          (NAME)
+          (COLON)
+          (COLON)
+          (NAME))
+        (C_BRACE))))
+  (typeDef
+    (TYPE_KEYWORD)
+    (NAME))
   (typeDef
     (TYPE_KEYWORD)
     (NAME)
+    (generics
+      (O_ANGLE)
+      (generic
+        (NAME))
+      (C_ANGLE))
     (variantParams
       (O_PAREN)
       (fieldDef
@@ -168,157 +80,21 @@ fn main() {
             (typeBounds
               (identifier
                 (NAME))))))
-      (COMMA)
-      (fieldDef
-        (NAME)
-        (typeAnnot
-          (COLON)
-          (type
-            (typeBounds
-              (identifier
-                (NAME))))))
       (C_PAREN)))
-  (COMMENT)
-  (implDef
-    (IMPL_KEYWORD)
-    (identifier
-      (NAME))
-    (block
-      (O_BRACE)
-      (fnDef
-        (FN_KEYWORD)
-        (NAME)
-        (params
-          (O_PAREN)
-          (param
-            (pattern
-              (NAME)))
-          (C_PAREN))
-        (typeAnnot
-          (COLON)
-          (type
-            (typeBounds
-              (identifier
-                (NAME)))))
-        (block
-          (O_BRACE)
-          (expr
-            (subExpr
-              (identifier
-                (NAME)))
-            (accessOp
-              (PERIOD))
-            (subExpr
-              (identifier
-                (NAME)))
-            (expOp
-              (CARET))
-            (subExpr
-              (FLOAT))
-            (addOp
-              (PLUS))
-            (subExpr
-              (identifier
-                (NAME)))
-            (accessOp
-              (PERIOD))
-            (subExpr
-              (identifier
-                (NAME)))
-            (expOp
-              (CARET))
-            (subExpr
-              (FLOAT)))
-          (C_BRACE)))
-      (C_BRACE)))
-  (COMMENT)
-  (implDef
-    (IMPL_KEYWORD)
-    (identifier
-      (NAME))
-    (implFor
-      (FOR_KEYWORD)
-      (identifier
-        (NAME)))
-    (block
-      (O_BRACE)
-      (fnDef
-        (FN_KEYWORD)
-        (NAME)
-        (params
-          (O_PAREN)
-          (param
-            (pattern
-              (NAME)))
-          (C_PAREN))
-        (typeAnnot
-          (COLON)
-          (type
-            (typeBounds
-              (identifier
-                (NAME)))))
-        (block
-          (O_BRACE)
-          (expr
-            (subExpr
-              (STRING))
-            (addOp
-              (PLUS))
-            (subExpr
-              (identifier
-                (NAME)))
-            (accessOp
-              (PERIOD))
-            (subExpr
-              (identifier
-                (NAME)))
-            (addOp
-              (PLUS))
-            (subExpr
-              (STRING))
-            (addOp
-              (PLUS))
-            (subExpr
-              (identifier
-                (NAME)))
-            (accessOp
-              (PERIOD))
-            (subExpr
-              (identifier
-                (NAME)))
-            (addOp
-              (PLUS))
-            (subExpr
-              (STRING)))
-          (C_BRACE)))
-      (C_BRACE)))
-  (COMMENT)
   (typeDef
     (TYPE_KEYWORD)
     (NAME)
+    (generics
+      (O_ANGLE)
+      (generic
+        (NAME))
+      (C_ANGLE))
     (variantList
       (O_BRACE)
       (variant
         (NAME)
         (variantParams
           (O_PAREN)
-          (fieldDef
-            (NAME)
-            (typeAnnot
-              (COLON)
-              (type
-                (typeBounds
-                  (identifier
-                    (NAME))))))
-          (COMMA)
-          (fieldDef
-            (NAME)
-            (typeAnnot
-              (COLON)
-              (type
-                (typeBounds
-                  (identifier
-                    (NAME))))))
           (C_PAREN)))
       (COMMA)
       (variant
@@ -334,12 +110,15 @@ fn main() {
                   (identifier
                     (NAME))))))
           (C_PAREN)))
-      (COMMA)
       (C_BRACE)))
-  (COMMENT)
   (traitDef
     (TRAIT_KEYWORD)
     (NAME)
+    (generics
+      (O_ANGLE)
+      (generic
+        (NAME))
+      (C_ANGLE))
     (block
       (O_BRACE)
       (fnDef
@@ -357,16 +136,64 @@ fn main() {
             (typeBounds
               (identifier
                 (NAME))))))
+      (fnDef
+        (FN_KEYWORD)
+        (NAME)
+        (generics
+          (O_ANGLE)
+          (generic
+            (NAME))
+          (C_ANGLE))
+        (params
+          (O_PAREN)
+          (param
+            (pattern
+              (NAME)))
+          (C_PAREN))
+        (typeAnnot
+          (COLON)
+          (type
+            (typeBounds
+              (identifier
+                (NAME)))))
+        (block
+          (O_BRACE)
+          (C_BRACE)))
       (C_BRACE)))
-  (COMMENT)
   (implDef
     (IMPL_KEYWORD)
+    (generics
+      (O_ANGLE)
+      (generic
+        (NAME))
+      (C_ANGLE))
     (identifier
-      (NAME))
+      (NAME)
+      (typeArgs
+        (O_ANGLE)
+        (type
+          (typeBounds
+            (identifier
+              (NAME)
+              (typeArgs
+                (O_ANGLE)
+                (type
+                  (typeBounds
+                    (identifier
+                      (NAME))))
+                (C_ANGLE)))))
+        (C_ANGLE)))
     (implFor
       (FOR_KEYWORD)
       (identifier
-        (NAME)))
+        (NAME)
+        (typeArgs
+          (O_ANGLE)
+          (type
+            (typeBounds
+              (identifier
+                (NAME))))
+          (C_ANGLE))))
     (block
       (O_BRACE)
       (fnDef
@@ -386,124 +213,8 @@ fn main() {
                 (NAME)))))
         (block
           (O_BRACE)
-          (expr
-            (subExpr
-              (matchExpr
-                (MATCH_KEYWORD)
-                (expr
-                  (subExpr
-                    (identifier
-                      (NAME))))
-                (matchClauses
-                  (O_BRACE)
-                  (matchClause
-                    (pattern
-                      (conPattern
-                        (identifier
-                          (NAME)
-                          (COLON)
-                          (COLON)
-                          (NAME))
-                        (conPatternParams
-                          (O_PAREN)
-                          (fieldPattern
-                            (NAME))
-                          (COMMA)
-                          (fieldPattern
-                            (NAME))
-                          (C_PAREN))))
-                    (block
-                      (O_BRACE)
-                      (expr
-                        (subExpr
-                          (identifier
-                            (NAME)))
-                        (multOp
-                          (ASTERISK))
-                        (subExpr
-                          (identifier
-                            (NAME))))
-                      (C_BRACE)))
-                  (matchClause
-                    (pattern
-                      (conPattern
-                        (identifier
-                          (NAME)
-                          (COLON)
-                          (COLON)
-                          (NAME))
-                        (conPatternParams
-                          (O_PAREN)
-                          (fieldPattern
-                            (NAME))
-                          (C_PAREN))))
-                    (block
-                      (O_BRACE)
-                      (expr
-                        (subExpr
-                          (identifier
-                            (NAME)
-                            (COLON)
-                            (COLON)
-                            (NAME)))
-                        (multOp
-                          (ASTERISK))
-                        (subExpr
-                          (identifier
-                            (NAME)))
-                        (expOp
-                          (CARET))
-                        (subExpr
-                          (INT)))
-                      (C_BRACE)))
-                  (C_BRACE)))))
           (C_BRACE)))
       (C_BRACE)))
-  (COMMENT)
-  (fnDef
-    (FN_KEYWORD)
-    (NAME)
-    (params
-      (O_PAREN)
-      (param
-        (pattern
-          (NAME))
-        (typeAnnot
-          (COLON)
-          (type
-            (typeBounds
-              (identifier
-                (NAME))))))
-      (COMMA)
-      (param
-        (pattern
-          (NAME))
-        (typeAnnot
-          (COLON)
-          (type
-            (typeBounds
-              (identifier
-                (NAME))))))
-      (C_PAREN))
-    (typeAnnot
-      (COLON)
-      (type
-        (typeBounds
-          (identifier
-            (NAME)))))
-    (block
-      (O_BRACE)
-      (expr
-        (subExpr
-          (identifier
-            (NAME)))
-        (addOp
-          (PLUS))
-        (subExpr
-          (identifier
-            (NAME))))
-      (C_BRACE)))
-  (COMMENT)
   (fnDef
     (FN_KEYWORD)
     (NAME)
@@ -514,10 +225,19 @@ fn main() {
         (COLON)
         (typeBounds
           (identifier
+            (NAME)
+            (COLON)
+            (COLON)
+            (NAME)
+            (COLON)
+            (COLON)
             (NAME))
           (PLUS)
           (identifier
             (NAME))))
+      (COMMA)
+      (generic
+        (NAME))
       (C_ANGLE))
     (params
       (O_PAREN)
@@ -530,129 +250,22 @@ fn main() {
             (typeBounds
               (identifier
                 (NAME))))))
-      (COMMA)
-      (param
-        (pattern
-          (NAME))
-        (typeAnnot
-          (COLON)
-          (type
-            (typeBounds
-              (identifier
-                (NAME))))))
       (C_PAREN))
     (typeAnnot
       (COLON)
       (type
         (typeBounds
           (identifier
-            (NAME)))))
+            (NAME)
+            (typeArgs
+              (O_ANGLE)
+              (type
+                (typeBounds
+                  (identifier
+                    (NAME))))
+              (C_ANGLE))))))
     (block
       (O_BRACE)
-      (expr
-        (subExpr
-          (identifier
-            (NAME)))
-        (accessOp
-          (PERIOD))
-        (subExpr
-          (identifier
-            (NAME))
-          (posCall
-            (O_PAREN)
-            (expr
-              (subExpr
-                (identifier
-                  (NAME))))
-            (C_PAREN)))
-        (accessOp
-          (PERIOD))
-        (subExpr
-          (identifier
-            (NAME))
-          (posCall
-            (O_PAREN)
-            (expr
-              (subExpr
-                (identifier
-                  (NAME))))
-            (C_PAREN))))
-      (C_BRACE)))
-  (fnDef
-    (FN_KEYWORD)
-    (NAME)
-    (params
-      (O_PAREN)
-      (C_PAREN))
-    (block
-      (O_BRACE)
-      (COMMENT)
-      (varDef
-        (LET_KEYWORD)
-        (pattern
-          (NAME))
-        (EQUALS)
-        (expr
-          (subExpr
-            (INT))))
-      (COMMENT)
-      (varDef
-        (LET_KEYWORD)
-        (pattern
-          (NAME))
-        (typeAnnot
-          (COLON)
-          (type
-            (typeBounds
-              (identifier
-                (NAME)))))
-        (EQUALS)
-        (expr
-          (subExpr
-            (INT))))
-      (COMMENT)
-      (varDef
-        (LET_KEYWORD)
-        (pattern
-          (NAME))
-        (EQUALS)
-        (expr
-          (subExpr
-            (INT))))
-      (varDef
-        (LET_KEYWORD)
-        (pattern
-          (NAME))
-        (EQUALS)
-        (expr
-          (subExpr
-            (FLOAT))))
-      (varDef
-        (LET_KEYWORD)
-        (pattern
-          (NAME))
-        (EQUALS)
-        (expr
-          (subExpr
-            (CHAR))))
-      (varDef
-        (LET_KEYWORD)
-        (pattern
-          (NAME))
-        (EQUALS)
-        (expr
-          (subExpr
-            (STRING))))
-      (varDef
-        (LET_KEYWORD)
-        (pattern
-          (NAME))
-        (EQUALS)
-        (expr
-          (subExpr
-            (identifier
-              (NAME)))))
-      (COMMENT)
       (varDef
         (LET_KEYWORD)
         (pattern
@@ -668,17 +281,73 @@ fn main() {
               (COMMA)
               (expr
                 (subExpr
-                  (INT)))
+                  (STRING)))
               (COMMA)
               (expr
                 (subExpr
-                  (INT)))
+                  (CHAR)))
+              (COMMA)
+              (expr
+                (subExpr
+                  (identifier
+                    (NAME))))
+              (COMMA)
+              (expr
+                (subExpr
+                  (identifier
+                    (NAME)
+                    (COLON)
+                    (COLON)
+                    (NAME))
+                  (posCall
+                    (O_PAREN)
+                    (C_PAREN))))
+              (COMMA)
+              (expr
+                (subExpr
+                  (identifier
+                    (NAME)
+                    (COLON)
+                    (COLON)
+                    (NAME))
+                  (namedCall
+                    (O_PAREN)
+                    (namedArg
+                      (NAME)
+                      (COLON)
+                      (expr
+                        (subExpr
+                          (INT))))
+                    (C_PAREN))))
+              (COMMA)
+              (expr
+                (subExpr
+                  (identifier
+                    (NAME)
+                    (COLON)
+                    (COLON)
+                    (NAME))
+                  (posCall
+                    (O_PAREN)
+                    (expr
+                      (subExpr
+                        (INT)))
+                    (C_PAREN))))
               (C_BRACKET)))))
-      (COMMENT)
       (varDef
         (LET_KEYWORD)
         (pattern
-          (NAME))
+          (conPattern
+            (identifier
+              (NAME)
+              (COLON)
+              (COLON)
+              (NAME))
+            (conPatternParams
+              (O_PAREN)
+              (fieldPattern
+                (NAME))
+              (C_PAREN))))
         (EQUALS)
         (expr
           (subExpr
@@ -687,74 +356,12 @@ fn main() {
               (COLON)
               (COLON)
               (NAME))
-            (namedCall
+            (posCall
               (O_PAREN)
-              (namedArg
-                (NAME)
-                (COLON)
-                (expr
-                  (subExpr
-                    (FLOAT))))
-              (COMMA)
-              (namedArg
-                (NAME)
-                (COLON)
-                (expr
-                  (subExpr
-                    (FLOAT))))
+              (expr
+                (subExpr
+                  (INT)))
               (C_PAREN)))))
-      (COMMENT)
-      (expr
-        (subExpr
-          (identifier
-            (NAME)))
-        (accessOp
-          (PERIOD))
-        (subExpr
-          (identifier
-            (NAME))))
-      (COMMENT)
-      (expr
-        (subExpr
-          (identifier
-            (NAME))
-          (posCall
-            (O_PAREN)
-            (expr
-              (subExpr
-                (STRING)))
-            (C_PAREN))))
-      (COMMENT)
-      (expr
-        (subExpr
-          (identifier
-            (NAME)))
-        (accessOp
-          (PERIOD))
-        (subExpr
-          (identifier
-            (NAME))
-          (posCall
-            (O_PAREN)
-            (C_PAREN))))
-      (COMMENT)
-      (expr
-        (subExpr
-          (identifier
-            (NAME)
-            (COLON)
-            (COLON)
-            (NAME))
-          (posCall
-            (O_PAREN)
-            (expr
-              (subExpr
-                (identifier
-                  (NAME))))
-            (C_PAREN))))
-      (COMMENT)
-      (COMMENT)
-      (COMMENT)
       (varDef
         (LET_KEYWORD)
         (pattern
@@ -767,25 +374,39 @@ fn main() {
               (expr
                 (subExpr
                   (identifier
-                    (NAME))))
+                    (NAME)))
+                (accessOp
+                  (PERIOD))
+                (subExpr
+                  (identifier
+                    (NAME))
+                  (posCall
+                    (O_PAREN)
+                    (C_PAREN)))
+                (accessOp
+                  (PERIOD))
+                (subExpr
+                  (identifier
+                    (NAME))
+                  (posCall
+                    (O_PAREN)
+                    (C_PAREN))))
               (block
                 (O_BRACE)
                 (expr
                   (subExpr
-                    (INT)))
+                    (identifier
+                      (NAME))))
                 (C_BRACE))
               (ELSE_KEYWORD)
               (block
                 (O_BRACE)
                 (expr
                   (subExpr
-                    (INT))
-                  (addOp
-                    (PLUS))
-                  (subExpr
-                    (INT)))
+                    (listExpr
+                      (O_BRACKET)
+                      (C_BRACKET))))
                 (C_BRACE))))))
-      (COMMENT)
       (varDef
         (LET_KEYWORD)
         (pattern
@@ -793,442 +414,39 @@ fn main() {
         (EQUALS)
         (expr
           (subExpr
-            (whileExpr
-              (WHILE_KEYWORD)
+            (ifLetExpr
+              (IF_KEYWORD)
+              (LET_KEYWORD)
+              (pattern
+                (conPattern
+                  (identifier
+                    (NAME)
+                    (COLON)
+                    (COLON)
+                    (NAME))
+                  (conPatternParams
+                    (O_PAREN)
+                    (fieldPattern
+                      (NAME))
+                    (C_PAREN))))
+              (EQUALS)
               (expr
                 (subExpr
                   (identifier
                     (NAME)))
-                (ltOp
-                  (O_ANGLE))
-                (subExpr
-                  (INT)))
-              (block
-                (O_BRACE)
-                (expr
-                  (subExpr
-                    (identifier
-                      (NAME)))
-                  (assignOp
-                    (EQUALS))
-                  (subExpr
-                    (identifier
-                      (NAME)))
-                  (addOp
-                    (PLUS))
-                  (subExpr
-                    (INT)))
-                (C_BRACE))))))
-      (COMMENT)
-      (varDef
-        (LET_KEYWORD)
-        (pattern
-          (NAME))
-        (EQUALS)
-        (expr
-          (subExpr
-            (forExpr
-              (FOR_KEYWORD)
-              (pattern
-                (NAME))
-              (IN_KEYWORD)
-              (expr
-                (subExpr
-                  (listExpr
-                    (O_BRACKET)
-                    (expr
-                      (subExpr
-                        (INT)))
-                    (COMMA)
-                    (expr
-                      (subExpr
-                        (INT)))
-                    (COMMA)
-                    (expr
-                      (subExpr
-                        (INT)))
-                    (C_BRACKET))))
-              (block
-                (O_BRACE)
-                (expr
-                  (subExpr
-                    (identifier
-                      (NAME))
-                    (posCall
-                      (O_PAREN)
-                      (expr
-                        (subExpr
-                          (identifier
-                            (NAME))))
-                      (C_PAREN))))
-                (expr
-                  (subExpr
-                    (identifier
-                      (NAME)))
-                  (addOp
-                    (PLUS))
-                  (subExpr
-                    (INT)))
-                (C_BRACE))))))
-      (COMMENT)
-      (varDef
-        (LET_KEYWORD)
-        (pattern
-          (conPattern
-            (identifier
-              (NAME)
-              (COLON)
-              (COLON)
-              (NAME))
-            (conPatternParams
-              (O_PAREN)
-              (fieldPattern
-                (NAME))
-              (C_PAREN))))
-        (EQUALS)
-        (expr
-          (subExpr
-            (identifier
-              (NAME)))))
-      (COMMENT)
-      (varDef
-        (LET_KEYWORD)
-        (pattern
-          (conPattern
-            (identifier
-              (NAME)
-              (COLON)
-              (COLON)
-              (NAME))
-            (conPatternParams
-              (O_PAREN)
-              (fieldPattern
-                (NAME)
-                (COLON)
-                (pattern
-                  (NAME)))
-              (C_PAREN))))
-        (EQUALS)
-        (expr
-          (subExpr
-            (identifier
-              (NAME)))))
-      (COMMENT)
-      (varDef
-        (LET_KEYWORD)
-        (pattern
-          (NAME))
-        (EQUALS)
-        (expr
-          (subExpr
-            (matchExpr
-              (MATCH_KEYWORD)
-              (expr
-                (subExpr
-                  (INT)))
-              (matchClauses
-                (O_BRACE)
-                (matchClause
-                  (pattern
-                    (INT))
-                  (block
-                    (O_BRACE)
-                    (expr
-                      (subExpr
-                        (STRING)))
-                    (C_BRACE)))
-                (matchClause
-                  (pattern
-                    (NAME))
-                  (guard
-                    (IF_KEYWORD)
-                    (expr
-                      (subExpr
-                        (identifier
-                          (NAME)))
-                      (modOp
-                        (PERCENT))
-                      (subExpr
-                        (INT))
-                      (eqOp
-                        (EQUALS)
-                        (EQUALS))
-                      (subExpr
-                        (INT))))
-                  (block
-                    (O_BRACE)
-                    (expr
-                      (subExpr
-                        (ifExpr
-                          (IF_KEYWORD)
-                          (expr
-                            (subExpr
-                              (O_PAREN)
-                              (expr
-                                (subExpr
-                                  (identifier
-                                    (NAME)))
-                                (gtOp
-                                  (C_ANGLE))
-                                (subExpr
-                                  (INT)))
-                              (C_PAREN)))
-                          (block
-                            (O_BRACE)
-                            (expr
-                              (subExpr
-                                (STRING)))
-                            (C_BRACE))
-                          (ELSE_KEYWORD)
-                          (block
-                            (O_BRACE)
-                            (expr
-                              (subExpr
-                                (STRING)))
-                            (C_BRACE)))))
-                    (C_BRACE)))
-                (matchClause
-                  (pattern
-                    (hole
-                      (UNDERSCORE)))
-                  (block
-                    (O_BRACE)
-                    (expr
-                      (subExpr
-                        (STRING)))
-                    (C_BRACE)))
-                (C_BRACE))))))
-      (COMMENT)
-      (varDef
-        (LET_KEYWORD)
-        (pattern
-          (NAME))
-        (EQUALS)
-        (expr
-          (subExpr
-            (matchExpr
-              (MATCH_KEYWORD)
-              (expr
+                (accessOp
+                  (PERIOD))
                 (subExpr
                   (identifier
                     (NAME))))
-              (matchClauses
-                (O_BRACE)
-                (matchClause
-                  (pattern
-                    (conPattern
-                      (identifier
-                        (NAME)
-                        (COLON)
-                        (COLON)
-                        (NAME))
-                      (conPatternParams
-                        (O_PAREN)
-                        (fieldPattern
-                          (NAME)
-                          (COLON)
-                          (pattern
-                            (INT)))
-                        (COMMA)
-                        (fieldPattern
-                          (NAME)
-                          (COLON)
-                          (pattern
-                            (INT)))
-                        (C_PAREN))))
-                  (block
-                    (O_BRACE)
-                    (expr
-                      (subExpr
-                        (STRING)))
-                    (C_BRACE)))
-                (matchClause
-                  (pattern
-                    (conPattern
-                      (identifier
-                        (NAME)
-                        (COLON)
-                        (COLON)
-                        (NAME))
-                      (conPatternParams
-                        (O_PAREN)
-                        (fieldPattern
-                          (NAME)
-                          (COLON)
-                          (pattern
-                            (INT)))
-                        (C_PAREN))))
-                  (block
-                    (O_BRACE)
-                    (expr
-                      (subExpr
-                        (STRING)))
-                    (C_BRACE)))
-                (matchClause
-                  (pattern
-                    (conPattern
-                      (identifier
-                        (NAME)
-                        (COLON)
-                        (COLON)
-                        (NAME))
-                      (conPatternParams
-                        (O_PAREN)
-                        (fieldPattern
-                          (NAME))
-                        (C_PAREN))))
-                  (guard
-                    (IF_KEYWORD)
-                    (expr
-                      (subExpr
-                        (identifier
-                          (NAME)))
-                      (neOp
-                        (EXCL)
-                        (EQUALS))
-                      (subExpr
-                        (INT))))
-                  (block
-                    (O_BRACE)
-                    (expr
-                      (subExpr
-                        (identifier
-                          (NAME))
-                        (posCall
-                          (O_PAREN)
-                          (expr
-                            (subExpr
-                              (STRING)))
-                          (COMMA)
-                          (expr
-                            (subExpr
-                              (identifier
-                                (NAME))))
-                          (C_PAREN))))
-                    (C_BRACE)))
-                (matchClause
-                  (pattern
-                    (hole
-                      (UNDERSCORE)))
-                  (block
-                    (O_BRACE)
-                    (expr
-                      (subExpr
-                        (STRING)))
-                    (C_BRACE)))
-                (C_BRACE))))))
-      (COMMENT)
-      (expr
-        (subExpr
-          (ifLetExpr
-            (IF_KEYWORD)
-            (LET_KEYWORD)
-            (pattern
-              (conPattern
-                (identifier
-                  (NAME))
-                (conPatternParams
-                  (O_PAREN)
-                  (fieldPattern
-                    (NAME))
-                  (C_PAREN))))
-            (EQUALS)
-            (expr
-              (subExpr
-                (identifier
-                  (NAME))
-                (posCall
-                  (O_PAREN)
-                  (expr
-                    (subExpr
-                      (INT)))
-                  (C_PAREN))))
-            (block
-              (O_BRACE)
-              (expr
-                (subExpr
-                  (identifier
-                    (NAME))
-                  (posCall
-                    (O_PAREN)
-                    (expr
-                      (subExpr
-                        (STRING)))
-                    (COMMA)
-                    (expr
-                      (subExpr
-                        (identifier
-                          (NAME))))
-                    (C_PAREN))))
-              (C_BRACE))
-            (ELSE_KEYWORD)
-            (block
-              (O_BRACE)
-              (expr
-                (subExpr
-                  (identifier
-                    (NAME))
-                  (posCall
-                    (O_PAREN)
-                    (expr
-                      (subExpr
-                        (STRING)))
-                    (C_PAREN))))
-              (C_BRACE)))))
-      (COMMENT)
-      (varDef
-        (LET_KEYWORD)
-        (pattern
-          (NAME))
-        (typeAnnot
-          (COLON)
-          (type
-            (fnType
-              (fnTypeParams
-                (PIPE)
-                (type
-                  (typeBounds
-                    (identifier
-                      (NAME))))
-                (PIPE))
-              (typeAnnot
-                (COLON)
-                (type
-                  (typeBounds
-                    (identifier
-                      (NAME))))))))
-        (EQUALS)
-        (expr
-          (subExpr
-            (closureExpr
-              (closureParams
-                (PIPE)
-                (param
-                  (pattern
-                    (NAME)))
-                (PIPE))
               (block
                 (O_BRACE)
                 (expr
                   (subExpr
                     (identifier
-                      (NAME)))
-                  (expOp
-                    (CARET))
-                  (subExpr
-                    (INT)))
-                (C_BRACE))))))
-      (varDef
-        (LET_KEYWORD)
-        (pattern
-          (NAME))
-        (EQUALS)
-        (expr
-          (subExpr
-            (closureExpr
-              (closureParams
-                (PIPE)
-                (PIPE))
+                      (NAME))))
+                (C_BRACE))
+              (ELSE_KEYWORD)
               (block
                 (O_BRACE)
                 (expr
@@ -1242,28 +460,196 @@ fn main() {
                           (STRING)))
                       (C_PAREN))))
                 (C_BRACE))))))
-      (COMMENT)
-      (varDef
-        (LET_KEYWORD)
-        (pattern
-          (NAME))
-        (EQUALS)
-        (expr
-          (subExpr
-            (identifier
-              (NAME)))))
-      (COMMENT)
-      (COMMENT)
-      (varDef
-        (LET_KEYWORD)
-        (pattern
-          (NAME))
-        (EQUALS)
-        (expr
-          (subExpr
-            (identifier
-              (NAME)
-              (COLON)
-              (COLON)
-              (NAME)))))
+      (expr
+        (subExpr
+          (whileExpr
+            (WHILE_KEYWORD)
+            (expr
+              (subExpr
+                (identifier
+                  (NAME)))
+              (accessOp
+                (PERIOD))
+              (subExpr
+                (identifier
+                  (NAME))
+                (posCall
+                  (O_PAREN)
+                  (C_PAREN)))
+              (ltOp
+                (O_ANGLE))
+              (subExpr
+                (INT))
+              (addOp
+                (PLUS))
+              (subExpr
+                (INT)))
+            (block
+              (O_BRACE)
+              (expr
+                (subExpr
+                  (identifier
+                    (NAME)
+                    (COLON)
+                    (COLON)
+                    (NAME))
+                  (posCall
+                    (O_PAREN)
+                    (expr
+                      (subExpr
+                        (identifier
+                          (NAME))))
+                    (COMMA)
+                    (expr
+                      (subExpr
+                        (INT)))
+                    (C_PAREN))))
+              (C_BRACE)))))
+      (expr
+        (subExpr
+          (forExpr
+            (FOR_KEYWORD)
+            (pattern
+              (conPattern
+                (identifier
+                  (NAME)
+                  (COLON)
+                  (COLON)
+                  (NAME))
+                (conPatternParams
+                  (O_PAREN)
+                  (fieldPattern
+                    (NAME)
+                    (COLON)
+                    (pattern
+                      (NAME)))
+                  (C_PAREN))))
+            (IN_KEYWORD)
+            (expr
+              (subExpr
+                (identifier
+                  (NAME))))
+            (block
+              (O_BRACE)
+              (expr
+                (subExpr
+                  (identifier
+                    (NAME))
+                  (posCall
+                    (O_PAREN)
+                    (expr
+                      (subExpr
+                        (identifier
+                          (NAME)))
+                      (accessOp
+                        (PERIOD))
+                      (subExpr
+                        (identifier
+                          (NAME))))
+                    (C_PAREN))))
+              (C_BRACE)))))
+      (expr
+        (subExpr
+          (matchExpr
+            (MATCH_KEYWORD)
+            (expr
+              (subExpr
+                (identifier
+                  (NAME)))
+              (accessOp
+                (PERIOD))
+              (subExpr
+                (identifier
+                  (NAME))
+                (posCall
+                  (O_PAREN)
+                  (C_PAREN))))
+            (matchClauses
+              (O_BRACE)
+              (matchClause
+                (pattern
+                  (subOp
+                    (MINUS))
+                  (INT))
+                (guard
+                  (IF_KEYWORD)
+                  (expr
+                    (subExpr
+                      (identifier
+                        (NAME)))
+                    (accessOp
+                      (PERIOD))
+                    (subExpr
+                      (identifier
+                        (NAME))
+                      (posCall
+                        (O_PAREN)
+                        (C_PAREN)))
+                    (gtOp
+                      (C_ANGLE))
+                    (subExpr
+                      (INT))))
+                (block
+                  (O_BRACE)
+                  (C_BRACE)))
+              (matchClause
+                (pattern
+                  (patternBind
+                    (NAME)
+                    (AT))
+                  (conPattern
+                    (identifier
+                      (NAME)
+                      (COLON)
+                      (COLON)
+                      (NAME))
+                    (conPatternParams
+                      (O_PAREN)
+                      (fieldPattern
+                        (NAME))
+                      (COMMA)
+                      (fieldPattern
+                        (NAME)
+                        (COLON)
+                        (pattern
+                          (hole
+                            (UNDERSCORE))))
+                      (C_PAREN))))
+                (block
+                  (O_BRACE)
+                  (C_BRACE)))
+              (matchClause
+                (pattern
+                  (conPattern
+                    (identifier
+                      (NAME)
+                      (COLON)
+                      (COLON)
+                      (NAME))
+                    (conPatternParams
+                      (O_PAREN)
+                      (C_PAREN))))
+                (block
+                  (O_BRACE)
+                  (C_BRACE)))
+              (matchClause
+                (pattern
+                  (STRING))
+                (block
+                  (O_BRACE)
+                  (C_BRACE)))
+              (matchClause
+                (pattern
+                  (CHAR))
+                (block
+                  (O_BRACE)
+                  (C_BRACE)))
+              (matchClause
+                (pattern
+                  (hole
+                    (UNDERSCORE)))
+                (block
+                  (O_BRACE)
+                  (C_BRACE)))
+              (C_BRACE)))))
       (C_BRACE))))

@@ -107,3 +107,50 @@ use std::io::Display
       (COLON)
       (COLON)
       (NAME))))
+
+===
+matchExpr
+===
+
+match a { b @ A::B(v: value) { b } }
+
+---
+
+(module
+  (expr
+    (subExpr
+      (matchExpr
+        (MATCH_KEYWORD)
+        (expr
+          (subExpr
+            (identifier
+              (NAME))))
+        (matchClauses
+          (O_BRACE)
+          (matchClause
+            (pattern
+              (patternBind
+                (NAME)
+                (AT))
+              (conPattern
+                (identifier
+                  (NAME)
+                  (COLON)
+                  (COLON)
+                  (NAME))
+                (conPatternParams
+                  (O_PAREN)
+                  (fieldPattern
+                    (NAME)
+                    (COLON)
+                    (pattern
+                      (NAME)))
+                  (C_PAREN))))
+            (block
+              (O_BRACE)
+              (expr
+                (subExpr
+                  (identifier
+                    (NAME))))
+              (C_BRACE)))
+          (C_BRACE))))))
