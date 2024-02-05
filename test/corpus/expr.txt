@@ -1,0 +1,72 @@
+====
+infix expr
+====
+
+1 + 2
+
+---
+
+(module
+  (expr
+    (subExpr
+      (INT))
+    (addOp
+      (PLUS))
+    (subExpr
+      (INT))))
+
+====
+infix chain expr
+====
+
+1 + 2 * 3
+
+---
+
+(module
+  (expr
+    (subExpr
+      (INT))
+    (addOp
+      (PLUS))
+    (subExpr
+      (INT))
+    (multOp
+      (ASTERISK))
+    (subExpr
+      (INT))))
+
+====
+prefix expr
+====
+
+-1
+
+---
+
+(module
+  (expr
+    (subExpr
+      (subOp
+        (MINUS))
+      (INT))))
+
+====
+infix prefix expr
+====
+
+-1 + 2
+
+---
+
+(module
+  (expr
+    (subExpr
+      (subOp
+        (MINUS))
+      (INT))
+    (addOp
+      (PLUS))
+    (subExpr
+      (INT))))
+

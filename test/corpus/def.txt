@@ -1,0 +1,86 @@
+====
+fnDef
+====
+
+fn main<T: Bar + Baz>(a: T): Foo<T> {}
+
+---
+
+(module
+  (fnDef
+    (FN_KEYWORD)
+    (NAME)
+    (generics
+      (O_ANGLE)
+      (generic
+        (NAME)
+        (COLON)
+        (typeBounds
+          (identifier
+            (NAME))
+          (PLUS)
+          (identifier
+            (NAME))))
+      (C_ANGLE))
+    (params
+      (O_PAREN)
+      (param
+        (pattern
+          (NAME))
+        (typeAnnot
+          (COLON)
+          (type
+            (typeBounds
+              (identifier
+                (NAME))))))
+      (C_PAREN))
+    (typeAnnot
+      (COLON)
+      (type
+        (typeBounds
+          (identifier
+            (NAME)
+            (typeArgs
+              (O_ANGLE)
+              (type
+                (typeBounds
+                  (identifier
+                    (NAME))))
+              (C_ANGLE))))))
+    (block
+      (O_BRACE)
+      (C_BRACE))))
+
+====
+traitDef
+====
+
+trait Display {
+    fn fmt(self): String
+}
+
+---
+
+(module
+  (traitDef
+    (TRAIT_KEYWORD)
+    (NAME)
+    (block
+      (O_BRACE)
+      (fnDef
+        (FN_KEYWORD)
+        (NAME)
+        (params
+          (O_PAREN)
+          (param
+            (pattern
+              (NAME)))
+          (C_PAREN))
+        (typeAnnot
+          (COLON)
+          (type
+            (typeBounds
+              (identifier
+                (NAME))))))
+      (C_BRACE))))
+
