@@ -6,7 +6,7 @@ module.exports = grammar({
         [$.variantList, $._statement]
     ],
     conflicts: $ => [[$.identifier, $._patternExpr]],
-    extras: $ => [/\s/, $._COMMENT],
+    extras: $ => [/\s/, $.COMMENT],
     word: $ => $.NAME,
     rules: {
         // module                ::= use-stmt* statement*
@@ -277,6 +277,6 @@ module.exports = grammar({
         INT: _ => /\d+/,
         FLOAT: _ => /((\d+(\.\d*)?e[+-]?\d+)|(\d+\.\d*)|(\d*\.\d+))/,
 
-        _COMMENT: _ => token(seq('//', /.*/))
+        COMMENT: _ => token(seq('//', /.*/))
     }
 })

@@ -143,6 +143,7 @@ fn main() {
 ---
 
 (module
+  (COMMENT)
   (useStatement
     (USE_KEYWORD)
     (useExpr
@@ -153,6 +154,7 @@ fn main() {
       (COLON)
       (COLON)
       (NAME)))
+  (COMMENT)
   (typeDef
     (TYPE_KEYWORD)
     (NAME)
@@ -176,6 +178,7 @@ fn main() {
               (identifier
                 (NAME))))))
       (C_PAREN)))
+  (COMMENT)
   (implDef
     (IMPL_KEYWORD)
     (identifier
@@ -228,6 +231,7 @@ fn main() {
               (FLOAT)))
           (C_BRACE)))
       (C_BRACE)))
+  (COMMENT)
   (implDef
     (IMPL_KEYWORD)
     (identifier
@@ -288,6 +292,7 @@ fn main() {
               (STRING)))
           (C_BRACE)))
       (C_BRACE)))
+  (COMMENT)
   (typeDef
     (TYPE_KEYWORD)
     (NAME)
@@ -331,6 +336,7 @@ fn main() {
           (C_PAREN)))
       (COMMA)
       (C_BRACE)))
+  (COMMENT)
   (traitDef
     (TRAIT_KEYWORD)
     (NAME)
@@ -352,6 +358,7 @@ fn main() {
               (identifier
                 (NAME))))))
       (C_BRACE)))
+  (COMMENT)
   (implDef
     (IMPL_KEYWORD)
     (identifier
@@ -452,6 +459,7 @@ fn main() {
                   (C_BRACE)))))
           (C_BRACE)))
       (C_BRACE)))
+  (COMMENT)
   (fnDef
     (FN_KEYWORD)
     (NAME)
@@ -495,6 +503,7 @@ fn main() {
           (identifier
             (NAME))))
       (C_BRACE)))
+  (COMMENT)
   (fnDef
     (FN_KEYWORD)
     (NAME)
@@ -577,6 +586,7 @@ fn main() {
       (C_PAREN))
     (block
       (O_BRACE)
+      (COMMENT)
       (varDef
         (LET_KEYWORD)
         (pattern
@@ -585,6 +595,7 @@ fn main() {
         (expr
           (subExpr
             (INT))))
+      (COMMENT)
       (varDef
         (LET_KEYWORD)
         (pattern
@@ -599,6 +610,7 @@ fn main() {
         (expr
           (subExpr
             (INT))))
+      (COMMENT)
       (varDef
         (LET_KEYWORD)
         (pattern
@@ -640,6 +652,7 @@ fn main() {
           (subExpr
             (identifier
               (NAME)))))
+      (COMMENT)
       (varDef
         (LET_KEYWORD)
         (pattern
@@ -661,6 +674,7 @@ fn main() {
                 (subExpr
                   (INT)))
               (C_BRACKET)))))
+      (COMMENT)
       (varDef
         (LET_KEYWORD)
         (pattern
@@ -689,6 +703,7 @@ fn main() {
                   (subExpr
                     (FLOAT))))
               (C_PAREN)))))
+      (COMMENT)
       (expr
         (subExpr
           (identifier
@@ -698,6 +713,7 @@ fn main() {
         (subExpr
           (identifier
             (NAME))))
+      (COMMENT)
       (expr
         (subExpr
           (identifier
@@ -708,6 +724,7 @@ fn main() {
               (subExpr
                 (STRING)))
             (C_PAREN))))
+      (COMMENT)
       (expr
         (subExpr
           (identifier
@@ -720,6 +737,7 @@ fn main() {
           (posCall
             (O_PAREN)
             (C_PAREN))))
+      (COMMENT)
       (expr
         (subExpr
           (identifier
@@ -734,6 +752,9 @@ fn main() {
                 (identifier
                   (NAME))))
             (C_PAREN))))
+      (COMMENT)
+      (COMMENT)
+      (COMMENT)
       (varDef
         (LET_KEYWORD)
         (pattern
@@ -764,6 +785,7 @@ fn main() {
                   (subExpr
                     (INT)))
                 (C_BRACE))))))
+      (COMMENT)
       (varDef
         (LET_KEYWORD)
         (pattern
@@ -797,6 +819,7 @@ fn main() {
                   (subExpr
                     (INT)))
                 (C_BRACE))))))
+      (COMMENT)
       (varDef
         (LET_KEYWORD)
         (pattern
@@ -847,6 +870,7 @@ fn main() {
                   (subExpr
                     (INT)))
                 (C_BRACE))))))
+      (COMMENT)
       (varDef
         (LET_KEYWORD)
         (pattern
@@ -866,6 +890,7 @@ fn main() {
           (subExpr
             (identifier
               (NAME)))))
+      (COMMENT)
       (varDef
         (LET_KEYWORD)
         (pattern
@@ -888,6 +913,7 @@ fn main() {
           (subExpr
             (identifier
               (NAME)))))
+      (COMMENT)
       (varDef
         (LET_KEYWORD)
         (pattern
@@ -972,6 +998,7 @@ fn main() {
                         (STRING)))
                     (C_BRACE)))
                 (C_BRACE))))))
+      (COMMENT)
       (varDef
         (LET_KEYWORD)
         (pattern
@@ -1090,6 +1117,7 @@ fn main() {
                         (STRING)))
                     (C_BRACE)))
                 (C_BRACE))))))
+      (COMMENT)
       (expr
         (subExpr
           (ifLetExpr
@@ -1147,6 +1175,7 @@ fn main() {
                         (STRING)))
                     (C_PAREN))))
               (C_BRACE)))))
+      (COMMENT)
       (varDef
         (LET_KEYWORD)
         (pattern
@@ -1213,6 +1242,7 @@ fn main() {
                           (STRING)))
                       (C_PAREN))))
                 (C_BRACE))))))
+      (COMMENT)
       (varDef
         (LET_KEYWORD)
         (pattern
@@ -1222,6 +1252,8 @@ fn main() {
           (subExpr
             (identifier
               (NAME)))))
+      (COMMENT)
+      (COMMENT)
       (varDef
         (LET_KEYWORD)
         (pattern

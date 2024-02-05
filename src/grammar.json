@@ -2253,7 +2253,7 @@
       "type": "PATTERN",
       "value": "((\\d+(\\.\\d*)?e[+-]?\\d+)|(\\d+\\.\\d*)|(\\d*\\.\\d+))"
     },
-    "_COMMENT": {
+    "COMMENT": {
       "type": "TOKEN",
       "content": {
         "type": "SEQ",
@@ -2277,7 +2277,7 @@
     },
     {
       "type": "SYMBOL",
-      "name": "_COMMENT"
+      "name": "COMMENT"
     }
   ],
   "conflicts": [

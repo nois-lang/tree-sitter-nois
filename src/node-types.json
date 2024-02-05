@@ -1734,6 +1734,10 @@
     "named": true
   },
   {
+    "type": "COMMENT",
+    "named": true
+  },
+  {
     "type": "C_ANGLE",
     "named": true
   },
