@@ -56,9 +56,9 @@ module.exports = grammar({
         //   break-stmt          ::= BREAK-KEYWORD
         breakStmt: $ => seq($.BREAK_KEYWORD),
         //   expr                ::= sub-expr (infix-op sub-expr)*
-        expr: $ => prec.left(seq($.subExpr, repeat(seq($._infixOp, $.subExpr)))),
+        expr: $ => prec.right(seq($.subExpr, repeat(seq($._infixOp, $.subExpr)))),
         //     sub-expr          ::= prefix-op? operand postfix-op?
-        subExpr: $ => prec.left(seq(optional($._prefixOp), $._operand, optional($._postfixOp))),
+        subExpr: $ => prec.right(seq(optional($._prefixOp), $._operand, optional($._postfixOp))),
         //       operand         ::= if-expr
         //                       | if-let-expr
         //                       | while-expr

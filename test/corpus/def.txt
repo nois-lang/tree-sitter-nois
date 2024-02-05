@@ -85,7 +85,7 @@ trait Display {
       (C_BRACE))))
 
 ====
-type def
+typeDef
 ====
 
 type Vec2(x: Float, y: Float)
