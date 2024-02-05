@@ -13,6 +13,7 @@
 (fnDef (NAME) @function)
 
 (fieldDef (NAME) @property)
+(fieldPattern (NAME) @property)
 
 (addOp) @operator
 (subOp) @operator
