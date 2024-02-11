@@ -53,6 +53,7 @@
 (FOR_KEYWORD) @keyword
 (IN_KEYWORD) @keyword
 (MATCH_KEYWORD) @keyword
+(PUB_KEYWORD) @keyword
 
 (O_PAREN) @punctuation.delimiter
 (C_PAREN) @punctuation.delimiter
@@ -60,6 +61,9 @@
 (C_BRACKET) @punctuation.delimiter
 (O_BRACE) @punctuation.delimiter
 (C_BRACE) @punctuation.delimiter
+(COLON) @punctuation.delimiter
+(PERIOD) @punctuation.delimiter
+(COMMA) @punctuation.delimiter
 
 (identifier (COLON) @punctuation.delimiter)
 
