@@ -1266,6 +1266,10 @@
           "named": true
         },
         {
+          "type": "FALSE",
+          "named": true
+        },
+        {
           "type": "FLOAT",
           "named": true
         },
@@ -1279,6 +1283,10 @@
         },
         {
           "type": "STRING",
+          "named": true
+        },
+        {
+          "type": "TRUE",
           "named": true
         },
         {
@@ -1778,6 +1786,10 @@
     "named": true
   },
   {
+    "type": "FALSE",
+    "named": true
+  },
+  {
     "type": "FLOAT",
     "named": true
   },
@@ -1867,6 +1879,10 @@
   },
   {
     "type": "TRAIT_KEYWORD",
+    "named": true
+  },
+  {
+    "type": "TRUE",
     "named": true
   },
   {

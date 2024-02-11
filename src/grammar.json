@@ -917,6 +917,14 @@
         },
         {
           "type": "SYMBOL",
+          "name": "TRUE"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "FALSE"
+        },
+        {
+          "type": "SYMBOL",
           "name": "identifier"
         }
       ]
@@ -2295,6 +2303,14 @@
     "FLOAT": {
       "type": "PATTERN",
       "value": "((\\d+(\\.\\d*)?e[+-]?\\d+)|(\\d+\\.\\d*)|(\\d*\\.\\d+))"
+    },
+    "TRUE": {
+      "type": "STRING",
+      "value": "true"
+    },
+    "FALSE": {
+      "type": "STRING",
+      "value": "false"
     },
     "COMMENT": {
       "type": "TOKEN",

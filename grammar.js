@@ -101,6 +101,8 @@ module.exports = grammar({
                 $.CHAR,
                 $.INT,
                 $.FLOAT,
+                $.TRUE,
+                $.FALSE,
                 $.identifier
             ),
         //     infix-op          ::= add-op | sub-op | mult-op | div-op | exp-op | mod-op | access-op | eq-op | ne-op
@@ -286,6 +288,8 @@ module.exports = grammar({
         _ESCAPE_SEQUENCE: _ => choice(/(\\[btnvfr\\'"])/, /u[0-9a-fA-F]{4}/),
         INT: _ => /\d+/,
         FLOAT: _ => /((\d+(\.\d*)?e[+-]?\d+)|(\d+\.\d*)|(\d*\.\d+))/,
+        TRUE: _ => 'true',
+        FALSE: _ => 'false',
 
         COMMENT: _ => token(seq('//', /.*/))
     }

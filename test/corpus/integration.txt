@@ -289,8 +289,7 @@ fn foo<T: std::io::Display + U, U>(b: T): Option<U> {
               (COMMA)
               (expr
                 (subExpr
-                  (identifier
-                    (NAME))))
+                  (TRUE)))
               (COMMA)
               (expr
                 (subExpr
