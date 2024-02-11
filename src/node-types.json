@@ -55,6 +55,29 @@
     }
   },
   {
+    "type": "arg",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "COLON",
+          "named": true
+        },
+        {
+          "type": "NAME",
+          "named": true
+        },
+        {
+          "type": "expr",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "assignOp",
     "named": true,
     "fields": {},
@@ -130,6 +153,33 @@
       "types": [
         {
           "type": "BREAK_KEYWORD",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "call",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "COMMA",
+          "named": true
+        },
+        {
+          "type": "C_PAREN",
+          "named": true
+        },
+        {
+          "type": "O_PAREN",
+          "named": true
+        },
+        {
+          "type": "arg",
           "named": true
         }
       ]
@@ -364,6 +414,10 @@
           "named": true
         },
         {
+          "type": "PUB_KEYWORD",
+          "named": true
+        },
+        {
           "type": "typeAnnot",
           "named": true
         }
@@ -407,6 +461,10 @@
         },
         {
           "type": "NAME",
+          "named": true
+        },
+        {
+          "type": "PUB_KEYWORD",
           "named": true
         },
         {
@@ -840,7 +898,7 @@
           "named": true
         },
         {
-          "type": "pattern",
+          "type": "patterns",
           "named": true
         }
       ]
@@ -964,56 +1022,6 @@
       "types": [
         {
           "type": "ASTERISK",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "namedArg",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "COLON",
-          "named": true
-        },
-        {
-          "type": "NAME",
-          "named": true
-        },
-        {
-          "type": "expr",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "namedCall",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "COMMA",
-          "named": true
-        },
-        {
-          "type": "C_PAREN",
-          "named": true
-        },
-        {
-          "type": "O_PAREN",
-          "named": true
-        },
-        {
-          "type": "namedArg",
           "named": true
         }
       ]
@@ -1189,7 +1197,7 @@
     }
   },
   {
-    "type": "posCall",
+    "type": "patterns",
     "named": true,
     "fields": {},
     "children": {
@@ -1197,19 +1205,11 @@
       "required": true,
       "types": [
         {
-          "type": "COMMA",
+          "type": "PIPE",
           "named": true
         },
         {
-          "type": "C_PAREN",
-          "named": true
-        },
-        {
-          "type": "O_PAREN",
-          "named": true
-        },
-        {
-          "type": "expr",
+          "type": "pattern",
           "named": true
         }
       ]
@@ -1282,6 +1282,10 @@
           "named": true
         },
         {
+          "type": "call",
+          "named": true
+        },
+        {
           "type": "closureExpr",
           "named": true
         },
@@ -1314,15 +1318,7 @@
           "named": true
         },
         {
-          "type": "namedCall",
-          "named": true
-        },
-        {
           "type": "notOp",
-          "named": true
-        },
-        {
-          "type": "posCall",
           "named": true
         },
         {
@@ -1365,6 +1361,10 @@
       "types": [
         {
           "type": "NAME",
+          "named": true
+        },
+        {
+          "type": "PUB_KEYWORD",
           "named": true
         },
         {
@@ -1483,6 +1483,10 @@
           "named": true
         },
         {
+          "type": "PUB_KEYWORD",
+          "named": true
+        },
+        {
           "type": "TYPE_KEYWORD",
           "named": true
         },
@@ -1560,6 +1564,10 @@
       "required": true,
       "types": [
         {
+          "type": "PUB_KEYWORD",
+          "named": true
+        },
+        {
           "type": "USE_KEYWORD",
           "named": true
         },
@@ -1584,6 +1592,10 @@
         },
         {
           "type": "LET_KEYWORD",
+          "named": true
+        },
+        {
+          "type": "PUB_KEYWORD",
           "named": true
         },
         {
@@ -1839,6 +1851,10 @@
   },
   {
     "type": "PLUS",
+    "named": true
+  },
+  {
+    "type": "PUB_KEYWORD",
     "named": true
   },
   {

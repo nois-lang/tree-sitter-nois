@@ -299,7 +299,7 @@ fn foo<T: std::io::Display + U, U>(b: T): Option<U> {
                     (COLON)
                     (COLON)
                     (NAME))
-                  (posCall
+                  (call
                     (O_PAREN)
                     (C_PAREN))))
               (COMMA)
@@ -310,9 +310,9 @@ fn foo<T: std::io::Display + U, U>(b: T): Option<U> {
                     (COLON)
                     (COLON)
                     (NAME))
-                  (namedCall
+                  (call
                     (O_PAREN)
-                    (namedArg
+                    (arg
                       (NAME)
                       (COLON)
                       (expr
@@ -327,11 +327,12 @@ fn foo<T: std::io::Display + U, U>(b: T): Option<U> {
                     (COLON)
                     (COLON)
                     (NAME))
-                  (posCall
+                  (call
                     (O_PAREN)
-                    (expr
-                      (subExpr
-                        (INT)))
+                    (arg
+                      (expr
+                        (subExpr
+                          (INT))))
                     (C_PAREN))))
               (C_BRACKET)))))
       (varDef
@@ -356,11 +357,12 @@ fn foo<T: std::io::Display + U, U>(b: T): Option<U> {
               (COLON)
               (COLON)
               (NAME))
-            (posCall
+            (call
               (O_PAREN)
-              (expr
-                (subExpr
-                  (INT)))
+              (arg
+                (expr
+                  (subExpr
+                    (INT))))
               (C_PAREN)))))
       (varDef
         (LET_KEYWORD)
@@ -380,7 +382,7 @@ fn foo<T: std::io::Display + U, U>(b: T): Option<U> {
                 (subExpr
                   (identifier
                     (NAME))
-                  (posCall
+                  (call
                     (O_PAREN)
                     (C_PAREN)))
                 (accessOp
@@ -388,7 +390,7 @@ fn foo<T: std::io::Display + U, U>(b: T): Option<U> {
                 (subExpr
                   (identifier
                     (NAME))
-                  (posCall
+                  (call
                     (O_PAREN)
                     (C_PAREN))))
               (block
@@ -453,11 +455,12 @@ fn foo<T: std::io::Display + U, U>(b: T): Option<U> {
                   (subExpr
                     (identifier
                       (NAME))
-                    (posCall
+                    (call
                       (O_PAREN)
-                      (expr
-                        (subExpr
-                          (STRING)))
+                      (arg
+                        (expr
+                          (subExpr
+                            (STRING))))
                       (C_PAREN))))
                 (C_BRACE))))))
       (expr
@@ -473,7 +476,7 @@ fn foo<T: std::io::Display + U, U>(b: T): Option<U> {
               (subExpr
                 (identifier
                   (NAME))
-                (posCall
+                (call
                   (O_PAREN)
                   (C_PAREN)))
               (ltOp
@@ -493,16 +496,18 @@ fn foo<T: std::io::Display + U, U>(b: T): Option<U> {
                     (COLON)
                     (COLON)
                     (NAME))
-                  (posCall
+                  (call
                     (O_PAREN)
-                    (expr
-                      (subExpr
-                        (identifier
-                          (NAME))))
+                    (arg
+                      (expr
+                        (subExpr
+                          (identifier
+                            (NAME)))))
                     (COMMA)
-                    (expr
-                      (subExpr
-                        (INT)))
+                    (arg
+                      (expr
+                        (subExpr
+                          (INT))))
                     (C_PAREN))))
               (C_BRACE)))))
       (expr
@@ -535,17 +540,18 @@ fn foo<T: std::io::Display + U, U>(b: T): Option<U> {
                 (subExpr
                   (identifier
                     (NAME))
-                  (posCall
+                  (call
                     (O_PAREN)
-                    (expr
-                      (subExpr
-                        (identifier
-                          (NAME)))
-                      (accessOp
-                        (PERIOD))
-                      (subExpr
-                        (identifier
-                          (NAME))))
+                    (arg
+                      (expr
+                        (subExpr
+                          (identifier
+                            (NAME)))
+                        (accessOp
+                          (PERIOD))
+                        (subExpr
+                          (identifier
+                            (NAME)))))
                     (C_PAREN))))
               (C_BRACE)))))
       (expr
@@ -561,16 +567,17 @@ fn foo<T: std::io::Display + U, U>(b: T): Option<U> {
               (subExpr
                 (identifier
                   (NAME))
-                (posCall
+                (call
                   (O_PAREN)
                   (C_PAREN))))
             (matchClauses
               (O_BRACE)
               (matchClause
-                (pattern
-                  (subOp
-                    (MINUS))
-                  (INT))
+                (patterns
+                  (pattern
+                    (subOp
+                      (MINUS))
+                    (INT)))
                 (guard
                   (IF_KEYWORD)
                   (expr
@@ -582,7 +589,7 @@ fn foo<T: std::io::Display + U, U>(b: T): Option<U> {
                     (subExpr
                       (identifier
                         (NAME))
-                      (posCall
+                      (call
                         (O_PAREN)
                         (C_PAREN)))
                     (gtOp
@@ -593,61 +600,66 @@ fn foo<T: std::io::Display + U, U>(b: T): Option<U> {
                   (O_BRACE)
                   (C_BRACE)))
               (matchClause
-                (pattern
-                  (patternBind
-                    (NAME)
-                    (AT))
-                  (conPattern
-                    (identifier
+                (patterns
+                  (pattern
+                    (patternBind
                       (NAME)
-                      (COLON)
-                      (COLON)
-                      (NAME))
-                    (conPatternParams
-                      (O_PAREN)
-                      (fieldPattern
-                        (NAME))
-                      (COMMA)
-                      (fieldPattern
+                      (AT))
+                    (conPattern
+                      (identifier
                         (NAME)
                         (COLON)
-                        (pattern
-                          (hole
-                            (UNDERSCORE))))
-                      (C_PAREN))))
+                        (COLON)
+                        (NAME))
+                      (conPatternParams
+                        (O_PAREN)
+                        (fieldPattern
+                          (NAME))
+                        (COMMA)
+                        (fieldPattern
+                          (NAME)
+                          (COLON)
+                          (pattern
+                            (hole
+                              (UNDERSCORE))))
+                        (C_PAREN)))))
                 (block
                   (O_BRACE)
                   (C_BRACE)))
               (matchClause
-                (pattern
-                  (conPattern
-                    (identifier
-                      (NAME)
-                      (COLON)
-                      (COLON)
-                      (NAME))
-                    (conPatternParams
-                      (O_PAREN)
-                      (C_PAREN))))
+                (patterns
+                  (pattern
+                    (conPattern
+                      (identifier
+                        (NAME)
+                        (COLON)
+                        (COLON)
+                        (NAME))
+                      (conPatternParams
+                        (O_PAREN)
+                        (C_PAREN)))))
                 (block
                   (O_BRACE)
                   (C_BRACE)))
               (matchClause
-                (pattern
-                  (STRING))
+                (patterns
+                  (pattern
+                    (STRING)))
                 (block
                   (O_BRACE)
                   (C_BRACE)))
               (matchClause
-                (pattern
-                  (CHAR))
+                (patterns
+                  (pattern
+                    (CHAR)))
                 (block
                   (O_BRACE)
                   (C_BRACE)))
               (matchClause
-                (pattern
-                  (hole
-                    (UNDERSCORE)))
+                (patterns
+                  (pattern
+                    (hole
+                      (UNDERSCORE))))
                 (block
                   (O_BRACE)
                   (C_BRACE)))

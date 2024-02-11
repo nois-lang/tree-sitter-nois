@@ -1,10 +1,7 @@
 module.exports = grammar({
     name: 'nois',
 
-    precedences: $ => [
-        [$.posCall, $.namedCall],
-        [$.variantList, $._statement]
-    ],
+    precedences: $ => [[$.variantList, $._statement]],
     conflicts: $ => [[$.identifier, $._patternExpr]],
     extras: $ => [/\s/, $.COMMENT],
     word: $ => $.NAME,
@@ -13,17 +10,26 @@ module.exports = grammar({
         module: $ => seq(repeat($.useStatement), repeat($._statement)),
         // statement             ::= var-def | fn-def | trait-def | impl-def | type-def | return-stmt | break-stmt | expr
         _statement: $ => choice($.varDef, $.fnDef, $.traitDef, $.implDef, $.typeDef, $.returnStmt, $.breakStmt, $.expr),
-        //   use-stmt            ::= USE-KEYWORD use-expr
-        useStatement: $ => seq($.USE_KEYWORD, $.useExpr),
+        //   use-stmt            ::= PUB-KEYWORD? USE-KEYWORD use-expr
+        useStatement: $ => seq(optional($.PUB_KEYWORD), $.USE_KEYWORD, $.useExpr),
         //     use-expr          ::= (NAME COLON COLON)* (use-list | NAME)
         useExpr: $ => seq(repeat(seq($.NAME, $.COLON, $.COLON)), choice($.useList, $.NAME)),
         //     use-list          ::= O-BRACE (use-expr (COMMA use-expr)*)? COMMA? C-BRACE
         useList: $ =>
             seq($.O_BRACE, optional(seq($.useExpr, repeat(seq($.COMMA, $.useExpr)))), optional($.COMMA), $.C_BRACE),
-        //   var-def             ::= LET-KEYWORD pattern type-annot? EQUALS expr
-        varDef: $ => seq($.LET_KEYWORD, $.pattern, optional($.typeAnnot), $.EQUALS, $.expr),
+        //   var-def             ::= PUB-KEYWORD? LET-KEYWORD pattern type-annot? EQUALS expr
+        varDef: $ => seq(optional($.PUB_KEYWORD), $.LET_KEYWORD, $.pattern, optional($.typeAnnot), $.EQUALS, $.expr),
         //   fn-def              ::= FN-KEYWORD NAME generics? params type-annot? block?
-        fnDef: $ => seq($.FN_KEYWORD, $.NAME, optional($.generics), $.params, optional($.typeAnnot), optional($.block)),
+        fnDef: $ =>
+            seq(
+                optional($.PUB_KEYWORD),
+                $.FN_KEYWORD,
+                $.NAME,
+                optional($.generics),
+                $.params,
+                optional($.typeAnnot),
+                optional($.block)
+            ),
         //     generics          ::= O-ANGLE (generic (COMMA generic)* COMMA?)? C-ANGLE
         generics: $ =>
             seq($.O_ANGLE, optional(seq($.generic, repeat(seq($.COMMA, $.generic)), optional($.COMMA))), $.C_ANGLE),
@@ -34,21 +40,27 @@ module.exports = grammar({
             seq($.O_PAREN, optional(seq($.param, repeat(seq($.COMMA, $.param)))), optional($.COMMA), $.C_PAREN),
         //       param           ::= pattern type-annot?
         param: $ => seq($.pattern, optional($.typeAnnot)),
-        //   trait-def           ::= TRAIT-KEYWORD NAME generics? block
-        traitDef: $ => seq($.TRAIT_KEYWORD, $.NAME, optional($.generics), $.block),
+        //   trait-def           ::= PUB-KEYWORD? TRAIT-KEYWORD NAME generics? block
+        traitDef: $ => seq(optional($.PUB_KEYWORD), $.TRAIT_KEYWORD, $.NAME, optional($.generics), $.block),
         //   impl-def            ::= IMPL-KEYWORD generics? identifier impl-for? block
         implDef: $ => seq($.IMPL_KEYWORD, optional($.generics), $.identifier, optional($.implFor), $.block),
         //     impl-for          ::= FOR-KEYWORD identifier
         implFor: $ => seq($.FOR_KEYWORD, $.identifier),
-        //   type-def            ::= TYPE-KEYWORD NAME generics? (variant-list | variant-params)?
+        //   type-def            ::= PUB-KEYWORD? TYPE-KEYWORD NAME generics? (variant-list | variant-params)?
         typeDef: $ =>
             prec.right(
-                seq($.TYPE_KEYWORD, $.NAME, optional($.generics), optional(choice($.variantList, $.variantParams)))
+                seq(
+                    optional($.PUB_KEYWORD),
+                    $.TYPE_KEYWORD,
+                    $.NAME,
+                    optional($.generics),
+                    optional(choice($.variantList, $.variantParams))
+                )
             ),
         //     variant-params    ::= O-PAREN (field-def (COMMA field-def)*)? COMMA? C-PAREN
         variantParams: $ => seq($.O_PAREN, optional(seq($.fieldDef, repeat(seq($.COMMA, $.fieldDef)))), $.C_PAREN),
-        //       field-def       ::= NAME type-annot
-        fieldDef: $ => seq($.NAME, $.typeAnnot),
+        //       field-def       ::= PUB-KEYWORD? NAME type-annot
+        fieldDef: $ => seq(optional($.PUB_KEYWORD), $.NAME, $.typeAnnot),
         //     variant-list      ::= O-BRACE (variant (COMMA variant)* COMMA?)? C-BRACE
         variantList: $ =>
             seq($.O_BRACE, optional(seq($.variant, repeat(seq($.COMMA, $.variant)), optional($.COMMA))), $.C_BRACE),
@@ -60,8 +72,8 @@ module.exports = grammar({
         breakStmt: $ => seq($.BREAK_KEYWORD),
         //   expr                ::= sub-expr (infix-op sub-expr)*
         expr: $ => prec.right(seq($.subExpr, repeat(seq($._infixOp, $.subExpr)))),
-        //     sub-expr          ::= prefix-op? operand postfix-op?
-        subExpr: $ => prec.right(seq(optional($._prefixOp), $._operand, optional($._postfixOp))),
+        //     sub-expr          ::= prefix-op? operand call?
+        subExpr: $ => prec.right(seq(optional($._prefixOp), $._operand, optional($.call))),
         //       operand         ::= if-expr
         //                       | if-let-expr
         //                       | while-expr
@@ -150,15 +162,10 @@ module.exports = grammar({
         notOp: $ => $.EXCL,
         //       spread-op       ::= PERIOD PERIOD
         spreadOp: $ => seq($.PERIOD, $.PERIOD),
-        //     postfix-op        ::= pos-call | named-call
-        _postfixOp: $ => choice($.posCall, $.namedCall),
-        //       pos-call        ::= O-PAREN (expr (COMMA expr)*)? COMMA? C-PAREN
-        posCall: $ => seq($.O_PAREN, optional(seq($.expr, repeat(seq($.COMMA, $.expr)))), optional($.COMMA), $.C_PAREN),
-        //       named-call      ::= O-PAREN (named-arg (COMMA named-arg)*)? COMMA? C-PAREN
-        namedCall: $ =>
-            seq($.O_PAREN, optional(seq($.namedArg, repeat(seq($.COMMA, $.namedArg)))), optional($.COMMA), $.C_PAREN),
-        //         named-arg     ::= NAME COLON expr
-        namedArg: $ => seq($.NAME, $.COLON, $.expr),
+        //     call              ::= O-PAREN (arg (COMMA arg)*)? COMMA? C-PAREN
+        call: $ => seq($.O_PAREN, optional(seq($.arg, repeat(seq($.COMMA, $.arg)))), optional($.COMMA), $.C_PAREN),
+        //       arg             ::= (NAME COLON)? expr
+        arg: $ => seq(optional(seq($.NAME, $.COLON)), $.expr),
         // identifier            ::= (NAME COLON COLON)* NAME type-args?
         identifier: $ => prec.left(seq(repeat(seq($.NAME, $.COLON, $.COLON)), $.NAME, optional($.typeArgs))),
         //   type-args           ::= O-ANGLE (type (COMMA type)* COMMA?)? C-ANGLE
@@ -205,8 +212,10 @@ module.exports = grammar({
         matchExpr: $ => seq($.MATCH_KEYWORD, $.expr, $.matchClauses),
         //   match-clauses       ::= O-BRACE match-clause* C-BRACE
         matchClauses: $ => seq($.O_BRACE, repeat($.matchClause), $.C_BRACE),
-        //     match-clause      ::= pattern guard? block
-        matchClause: $ => seq($.pattern, optional($.guard), $.block),
+        //     match-clause      ::= patterns guard? block
+        matchClause: $ => seq($.patterns, optional($.guard), $.block),
+        //       patterns        ::= pattern (PIPE pattern)*
+        patterns: $ => seq($.pattern, repeat(seq($.PIPE, $.pattern))),
         //       guard           ::= IF-KEYWORD expr
         guard: $ => seq($.IF_KEYWORD, $.expr),
         // pattern               ::= pattern-bind? pattern-expr
@@ -245,6 +254,7 @@ module.exports = grammar({
         FOR_KEYWORD: _ => 'for',
         IN_KEYWORD: _ => 'in',
         MATCH_KEYWORD: _ => 'match',
+        PUB_KEYWORD: _ => 'pub',
 
         O_PAREN: _ => '(',
         C_PAREN: _ => ')',

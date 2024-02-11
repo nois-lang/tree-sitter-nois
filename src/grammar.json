@@ -62,6 +62,18 @@
       "type": "SEQ",
       "members": [
         {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "PUB_KEYWORD"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
           "type": "SYMBOL",
           "name": "USE_KEYWORD"
         },
@@ -171,6 +183,18 @@
       "type": "SEQ",
       "members": [
         {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "PUB_KEYWORD"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
           "type": "SYMBOL",
           "name": "LET_KEYWORD"
         },
@@ -203,6 +227,18 @@
     "fnDef": {
       "type": "SEQ",
       "members": [
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "PUB_KEYWORD"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
         {
           "type": "SYMBOL",
           "name": "FN_KEYWORD"
@@ -424,6 +460,18 @@
       "type": "SEQ",
       "members": [
         {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "PUB_KEYWORD"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
           "type": "SYMBOL",
           "name": "TRAIT_KEYWORD"
         },
@@ -509,6 +557,18 @@
       "content": {
         "type": "SEQ",
         "members": [
+          {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "PUB_KEYWORD"
+              },
+              {
+                "type": "BLANK"
+              }
+            ]
+          },
           {
             "type": "SYMBOL",
             "name": "TYPE_KEYWORD"
@@ -602,6 +662,18 @@
     "fieldDef": {
       "type": "SEQ",
       "members": [
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "PUB_KEYWORD"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
         {
           "type": "SYMBOL",
           "name": "NAME"
@@ -769,7 +841,7 @@
             "members": [
               {
                 "type": "SYMBOL",
-                "name": "_postfixOp"
+                "name": "call"
               },
               {
                 "type": "BLANK"
@@ -1070,20 +1142,7 @@
         }
       ]
     },
-    "_postfixOp": {
-      "type": "CHOICE",
-      "members": [
-        {
-          "type": "SYMBOL",
-          "name": "posCall"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "namedCall"
-        }
-      ]
-    },
-    "posCall": {
+    "call": {
       "type": "SEQ",
       "members": [
         {
@@ -1098,7 +1157,7 @@
               "members": [
                 {
                   "type": "SYMBOL",
-                  "name": "expr"
+                  "name": "arg"
                 },
                 {
                   "type": "REPEAT",
@@ -1111,7 +1170,7 @@
                       },
                       {
                         "type": "SYMBOL",
-                        "name": "expr"
+                        "name": "arg"
                       }
                     ]
                   }
@@ -1141,13 +1200,9 @@
         }
       ]
     },
-    "namedCall": {
+    "arg": {
       "type": "SEQ",
       "members": [
-        {
-          "type": "SYMBOL",
-          "name": "O_PAREN"
-        },
         {
           "type": "CHOICE",
           "members": [
@@ -1156,23 +1211,11 @@
               "members": [
                 {
                   "type": "SYMBOL",
-                  "name": "namedArg"
+                  "name": "NAME"
                 },
                 {
-                  "type": "REPEAT",
-                  "content": {
-                    "type": "SEQ",
-                    "members": [
-                      {
-                        "type": "SYMBOL",
-                        "name": "COMMA"
-                      },
-                      {
-                        "type": "SYMBOL",
-                        "name": "namedArg"
-                      }
-                    ]
-                  }
+                  "type": "SYMBOL",
+                  "name": "COLON"
                 }
               ]
             },
@@ -1180,35 +1223,6 @@
               "type": "BLANK"
             }
           ]
-        },
-        {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "SYMBOL",
-              "name": "COMMA"
-            },
-            {
-              "type": "BLANK"
-            }
-          ]
-        },
-        {
-          "type": "SYMBOL",
-          "name": "C_PAREN"
-        }
-      ]
-    },
-    "namedArg": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "SYMBOL",
-          "name": "NAME"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "COLON"
         },
         {
           "type": "SYMBOL",
@@ -1790,7 +1804,7 @@
       "members": [
         {
           "type": "SYMBOL",
-          "name": "pattern"
+          "name": "patterns"
         },
         {
           "type": "CHOICE",
@@ -1807,6 +1821,31 @@
         {
           "type": "SYMBOL",
           "name": "block"
+        }
+      ]
+    },
+    "patterns": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "pattern"
+        },
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "PIPE"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "pattern"
+              }
+            ]
+          }
         }
       ]
     },
@@ -2073,6 +2112,10 @@
       "type": "STRING",
       "value": "match"
     },
+    "PUB_KEYWORD": {
+      "type": "STRING",
+      "value": "pub"
+    },
     "O_PAREN": {
       "type": "STRING",
       "value": "("
@@ -2287,16 +2330,6 @@
     ]
   ],
   "precedences": [
-    [
-      {
-        "type": "SYMBOL",
-        "name": "posCall"
-      },
-      {
-        "type": "SYMBOL",
-        "name": "namedCall"
-      }
-    ],
     [
       {
         "type": "SYMBOL",
