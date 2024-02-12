@@ -21,12 +21,7 @@
             "scope": "source.no",
             "file-types": [
                 "no"
-            ],
-            "highlights": [
-                "queries/highlights.scm"
-            ],
-            "locals": [],
-            "tags": []
+            ]
         }
     ]
 }
