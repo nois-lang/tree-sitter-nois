@@ -821,32 +821,15 @@
         "type": "SEQ",
         "members": [
           {
-            "type": "CHOICE",
-            "members": [
-              {
-                "type": "SYMBOL",
-                "name": "_prefixOp"
-              },
-              {
-                "type": "BLANK"
-              }
-            ]
-          },
-          {
             "type": "SYMBOL",
             "name": "_operand"
           },
           {
-            "type": "CHOICE",
-            "members": [
-              {
-                "type": "SYMBOL",
-                "name": "call"
-              },
-              {
-                "type": "BLANK"
-              }
-            ]
+            "type": "REPEAT",
+            "content": {
+              "type": "SYMBOL",
+              "name": "_postfixOp"
+            }
           }
         ]
       }
@@ -909,11 +892,7 @@
         },
         {
           "type": "SYMBOL",
-          "name": "INT"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "FLOAT"
+          "name": "number"
         },
         {
           "type": "SYMBOL",
@@ -1116,41 +1095,24 @@
       "type": "SYMBOL",
       "name": "EQUALS"
     },
-    "_prefixOp": {
+    "_postfixOp": {
       "type": "CHOICE",
       "members": [
         {
           "type": "SYMBOL",
-          "name": "subOp"
+          "name": "callOp"
         },
         {
           "type": "SYMBOL",
-          "name": "notOp"
+          "name": "unwrapOp"
         },
         {
           "type": "SYMBOL",
-          "name": "spreadOp"
+          "name": "bindOp"
         }
       ]
     },
-    "notOp": {
-      "type": "SYMBOL",
-      "name": "EXCL"
-    },
-    "spreadOp": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "SYMBOL",
-          "name": "PERIOD"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "PERIOD"
-        }
-      ]
-    },
-    "call": {
+    "callOp": {
       "type": "SEQ",
       "members": [
         {
@@ -1235,6 +1197,24 @@
         {
           "type": "SYMBOL",
           "name": "expr"
+        }
+      ]
+    },
+    "unwrapOp": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "EXCL"
+        }
+      ]
+    },
+    "bindOp": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "QMARK"
         }
       ]
     },
@@ -1924,34 +1904,8 @@
           "name": "CHAR"
         },
         {
-          "type": "SEQ",
-          "members": [
-            {
-              "type": "CHOICE",
-              "members": [
-                {
-                  "type": "SYMBOL",
-                  "name": "_prefixOp"
-                },
-                {
-                  "type": "BLANK"
-                }
-              ]
-            },
-            {
-              "type": "CHOICE",
-              "members": [
-                {
-                  "type": "SYMBOL",
-                  "name": "INT"
-                },
-                {
-                  "type": "SYMBOL",
-                  "name": "FLOAT"
-                }
-              ]
-            }
-          ]
+          "type": "SYMBOL",
+          "name": "number"
         },
         {
           "type": "SYMBOL",
@@ -2063,6 +2017,36 @@
     "hole": {
       "type": "SYMBOL",
       "name": "UNDERSCORE"
+    },
+    "number": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "MINUS"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "INT"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "FLOAT"
+            }
+          ]
+        }
+      ]
     },
     "USE_KEYWORD": {
       "type": "STRING",
@@ -2191,6 +2175,10 @@
     "EXCL": {
       "type": "STRING",
       "value": "!"
+    },
+    "QMARK": {
+      "type": "STRING",
+      "value": "?"
     },
     "PERIOD": {
       "type": "STRING",

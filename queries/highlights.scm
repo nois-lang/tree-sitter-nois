@@ -14,6 +14,7 @@
 
 (fieldDef (NAME) @property)
 (fieldPattern (NAME) @property)
+(arg (NAME) @property)
 
 (addOp) @operator
 (subOp) @operator
@@ -30,9 +31,8 @@
 (ltOp) @operator
 (andOp) @operator
 (orOp) @operator
-(assignOp) @operator
-(notOp) @operator
-(spreadOp) @operator
+(unwrapOp) @operator
+(bindOp) @operator
 
 (INT) @number
 (FLOAT) @number

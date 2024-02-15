@@ -72,8 +72,8 @@ module.exports = grammar({
         breakStmt: $ => seq($.BREAK_KEYWORD),
         //   expr                ::= sub-expr (infix-op sub-expr)*
         expr: $ => prec.right(seq($.subExpr, repeat(seq($._infixOp, $.subExpr)))),
-        //     sub-expr          ::= prefix-op? operand call?
-        subExpr: $ => prec.right(seq(optional($._prefixOp), $._operand, optional($.call))),
+        //     sub-expr          ::= operand postfix-op*
+        subExpr: $ => prec.right(seq($._operand, repeat($._postfixOp))),
         //       operand         ::= if-expr
         //                       | if-let-expr
         //                       | while-expr
@@ -84,8 +84,7 @@ module.exports = grammar({
         //                       | list-expr
         //                       | STRING
         //                       | CHAR
-        //                       | INT
-        //                       | FLOAT
+        //                       | number
         //                       | identifier
         _operand: $ =>
             choice(
@@ -99,8 +98,7 @@ module.exports = grammar({
                 $.listExpr,
                 $.STRING,
                 $.CHAR,
-                $.INT,
-                $.FLOAT,
+                $.number,
                 $.TRUE,
                 $.FALSE,
                 $.identifier
@@ -158,16 +156,16 @@ module.exports = grammar({
         orOp: $ => seq($.PIPE, $.PIPE),
         //       assign-op       ::= EQUALS;
         assignOp: $ => $.EQUALS,
-        //     prefix-op         ::= sub-op | not-op | spread-op
-        _prefixOp: $ => choice($.subOp, $.notOp, $.spreadOp),
-        //       not-op          ::= EXCL
-        notOp: $ => $.EXCL,
-        //       spread-op       ::= PERIOD PERIOD
-        spreadOp: $ => seq($.PERIOD, $.PERIOD),
-        //     call              ::= O-PAREN (arg (COMMA arg)*)? COMMA? C-PAREN
-        call: $ => seq($.O_PAREN, optional(seq($.arg, repeat(seq($.COMMA, $.arg)))), optional($.COMMA), $.C_PAREN),
-        //       arg             ::= (NAME COLON)? expr
+        //     postfix-op        ::= call-op | unwrap-op | bind-op
+        _postfixOp: $ => choice($.callOp, $.unwrapOp, $.bindOp),
+        //       call-op         ::= O-PAREN (arg (COMMA arg)*)? COMMA? C-PAREN
+        callOp: $ => seq($.O_PAREN, optional(seq($.arg, repeat(seq($.COMMA, $.arg)))), optional($.COMMA), $.C_PAREN),
+        //         arg           ::= (NAME COLON)? expr
         arg: $ => seq(optional(seq($.NAME, $.COLON)), $.expr),
+        //       unwrap-op       ::= EXCL
+        unwrapOp: $ => seq($.EXCL),
+        //       bind-op         ::= QMARK
+        bindOp: $ => seq($.QMARK),
         // identifier            ::= (NAME COLON COLON)* NAME type-args?
         identifier: $ => prec.left(seq(repeat(seq($.NAME, $.COLON, $.COLON)), $.NAME, optional($.typeArgs))),
         //   type-args           ::= O-ANGLE (type (COMMA type)* COMMA?)? C-ANGLE
@@ -224,9 +222,8 @@ module.exports = grammar({
         pattern: $ => seq(optional($.patternBind), $._patternExpr),
         //   pattern-bind        ::= NAME AT
         patternBind: $ => seq($.NAME, $.AT),
-        //   pattern-expr        ::= NAME | con-pattern | STRING | CHAR | prefix-op? (INT | FLOAT) | hole
-        _patternExpr: $ =>
-            choice($.NAME, $.conPattern, $.STRING, $.CHAR, seq(optional($._prefixOp), choice($.INT, $.FLOAT)), $.hole),
+        //   pattern-expr        ::= NAME | con-pattern | STRING | CHAR | number | hole
+        _patternExpr: $ => choice($.NAME, $.conPattern, $.STRING, $.CHAR, $.number, $.hole),
         //     con-pattern       ::= identifier con-pattern-params
         conPattern: $ => seq($.identifier, $.conPatternParams),
         //     con-pattern-parms ::= O-PAREN (field-pattern (COMMA field-pattern)*)? COMMA? C-PAREN
@@ -241,6 +238,8 @@ module.exports = grammar({
         fieldPattern: $ => seq($.NAME, optional(seq($.COLON, $.pattern))),
         //     hole              ::= UNDERSCORE
         hole: $ => $.UNDERSCORE,
+        // number                ::= MINUS? (INT | FLOAT)
+        number: $ => seq(optional($.MINUS), choice($.INT, $.FLOAT)),
 
         USE_KEYWORD: _ => 'use',
         TYPE_KEYWORD: _ => 'type',
@@ -275,6 +274,7 @@ module.exports = grammar({
         AMPERSAND: _ => '&',
         PIPE: _ => '|',
         EXCL: _ => '!',
+        QMARK: _ => '?',
         PERIOD: _ => '.',
         COLON: _ => ':',
         COMMA: _ => ',',

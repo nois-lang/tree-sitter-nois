@@ -93,6 +93,21 @@
     }
   },
   {
+    "type": "bindOp",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "QMARK",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "block",
     "named": true,
     "fields": {},
@@ -159,7 +174,7 @@
     }
   },
   {
-    "type": "call",
+    "type": "callOp",
     "named": true,
     "fields": {},
     "children": {
@@ -1047,15 +1062,23 @@
     }
   },
   {
-    "type": "notOp",
+    "type": "number",
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": true,
       "types": [
         {
-          "type": "EXCL",
+          "type": "FLOAT",
+          "named": true
+        },
+        {
+          "type": "INT",
+          "named": true
+        },
+        {
+          "type": "MINUS",
           "named": true
         }
       ]
@@ -1135,14 +1158,6 @@
           "named": true
         },
         {
-          "type": "FLOAT",
-          "named": true
-        },
-        {
-          "type": "INT",
-          "named": true
-        },
-        {
           "type": "NAME",
           "named": true
         },
@@ -1159,19 +1174,11 @@
           "named": true
         },
         {
-          "type": "notOp",
+          "type": "number",
           "named": true
         },
         {
           "type": "patternBind",
-          "named": true
-        },
-        {
-          "type": "spreadOp",
-          "named": true
-        },
-        {
-          "type": "subOp",
           "named": true
         }
       ]
@@ -1235,21 +1242,6 @@
     }
   },
   {
-    "type": "spreadOp",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "PERIOD",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
     "type": "subExpr",
     "named": true,
     "fields": {},
@@ -1270,14 +1262,6 @@
           "named": true
         },
         {
-          "type": "FLOAT",
-          "named": true
-        },
-        {
-          "type": "INT",
-          "named": true
-        },
-        {
           "type": "O_PAREN",
           "named": true
         },
@@ -1290,7 +1274,11 @@
           "named": true
         },
         {
-          "type": "call",
+          "type": "bindOp",
+          "named": true
+        },
+        {
+          "type": "callOp",
           "named": true
         },
         {
@@ -1326,15 +1314,11 @@
           "named": true
         },
         {
-          "type": "notOp",
+          "type": "number",
           "named": true
         },
         {
-          "type": "spreadOp",
-          "named": true
-        },
-        {
-          "type": "subOp",
+          "type": "unwrapOp",
           "named": true
         },
         {
@@ -1508,6 +1492,21 @@
         },
         {
           "type": "variantParams",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "unwrapOp",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "EXCL",
           "named": true
         }
       ]
@@ -1867,6 +1866,10 @@
   },
   {
     "type": "PUB_KEYWORD",
+    "named": true
+  },
+  {
+    "type": "QMARK",
     "named": true
   },
   {
