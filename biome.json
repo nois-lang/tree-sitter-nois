@@ -1,5 +1,5 @@
 {
-    "$schema": "https://biomejs.dev/schemas/1.5.3/schema.json",
+    "$schema": "https://biomejs.dev/schemas/1.6.1/schema.json",
     "formatter": {
         "lineWidth": 120,
         "indentStyle": "space",
@@ -8,16 +8,16 @@
     "linter": {
         "rules": {
             "recommended": true,
-            "nursery": {
+            "correctness": {
+                "noSwitchDeclarations": "off",
                 "noUnusedImports": "warn"
             },
-            "correctness": {
-                "noSwitchDeclarations": "off"
-            },
             "suspicious": {
+                "noConsoleLog": "warn",
                 "noExplicitAny": "off",
                 "noShadowRestrictedNames": "off",
-                "noConfusingVoidType": "off"
+                "noConfusingVoidType": "off",
+                "noThenProperty": "off"
             },
             "complexity": {
                 "noForEach": "off"
@@ -28,7 +28,12 @@
                 "noInferrableTypes": "off",
                 "noUselessElse": "off",
                 "useTemplate": "off",
-                "noParameterAssign": "off"
+                "noParameterAssign": "off",
+                "noDefaultExport": "warn",
+                "noNamespace": "warn",
+                "useNamingConvention": "warn",
+                "useImportType": "off",
+                "useNodejsImportProtocol": "off"
             }
         }
     },

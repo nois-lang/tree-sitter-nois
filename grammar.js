@@ -1,7 +1,10 @@
 module.exports = grammar({
     name: 'nois',
 
-    precedences: $ => [[$.variantList, $._statement]],
+    precedences: $ => [
+        [$.variantList, $._statement],
+        [$.methodCallOp, $.fieldAccessOp]
+    ],
     conflicts: $ => [[$.identifier, $._patternExpr]],
     extras: $ => [/\s/, $.COMMENT],
     word: $ => $.NAME,
@@ -82,9 +85,10 @@ module.exports = grammar({
         //                       | closure-expr
         //                       | O-PAREN expr C-PAREN
         //                       | list-expr
-        //                       | STRING
+        //                       | string
         //                       | CHAR
         //                       | number
+        //                       | bool
         //                       | identifier
         _operand: $ =>
             choice(
@@ -96,11 +100,10 @@ module.exports = grammar({
                 $.closureExpr,
                 seq($.O_PAREN, $.expr, $.C_PAREN),
                 $.listExpr,
-                $.STRING,
+                $.string,
                 $.CHAR,
                 $.number,
-                $.TRUE,
-                $.FALSE,
+                $.bool,
                 $.identifier
             ),
         //     infix-op          ::= add-op | sub-op | mult-op | div-op | exp-op | mod-op | access-op | eq-op | ne-op
@@ -113,7 +116,6 @@ module.exports = grammar({
                 $.divOp,
                 $.expOp,
                 $.modOp,
-                $.accessOp,
                 $.eqOp,
                 $.neOp,
                 $.geOp,
@@ -136,8 +138,6 @@ module.exports = grammar({
         expOp: $ => $.CARET,
         //       mod-op          ::= PERCENT;
         modOp: $ => $.PERCENT,
-        //       access-op       ::= PERIOD;
-        accessOp: $ => $.PERIOD,
         //       eq-op           ::= EQUALS EQUALS;
         eqOp: $ => seq($.EQUALS, $.EQUALS),
         //       ne-op           ::= EXCL EQUALS;
@@ -156,8 +156,12 @@ module.exports = grammar({
         orOp: $ => seq($.PIPE, $.PIPE),
         //       assign-op       ::= EQUALS;
         assignOp: $ => $.EQUALS,
-        //     postfix-op        ::= call-op | unwrap-op | bind-op
-        _postfixOp: $ => choice($.callOp, $.unwrapOp, $.bindOp),
+        //     postfix-op        ::= method-call-op | field-access-op | call-op | unwrap-op | bind-op | await-op
+        _postfixOp: $ => choice($.methodCallOp, $.fieldAccessOp, $.callOp, $.unwrapOp, $.bindOp, $.awaitOp),
+        //       method-call-op  ::= PERIOD NAME type-args? call-op
+        methodCallOp: $ => seq($.PERIOD, $.NAME, optional($.typeArgs), $.callOp),
+        //       field-access-op ::= PERIOD NAME
+        fieldAccessOp: $ => seq($.PERIOD, $.NAME),
         //       call-op         ::= O-PAREN (arg (COMMA arg)*)? COMMA? C-PAREN
         callOp: $ => seq($.O_PAREN, optional(seq($.arg, repeat(seq($.COMMA, $.arg)))), optional($.COMMA), $.C_PAREN),
         //         arg           ::= (NAME COLON)? expr
@@ -166,6 +170,8 @@ module.exports = grammar({
         unwrapOp: $ => seq($.EXCL),
         //       bind-op         ::= QMARK
         bindOp: $ => seq($.QMARK),
+        //       await-op        ::= PERIOD AWAIT-KEYWORD
+        awaitOp: $ => seq($.PERIOD, $.AWAIT_KEYWORD),
         // identifier            ::= (NAME COLON COLON)* NAME type-args?
         identifier: $ => prec.left(seq(repeat(seq($.NAME, $.COLON, $.COLON)), $.NAME, optional($.typeArgs))),
         //   type-args           ::= O-ANGLE (type (COMMA type)* COMMA?)? C-ANGLE
@@ -222,11 +228,11 @@ module.exports = grammar({
         pattern: $ => seq(optional($.patternBind), $._patternExpr),
         //   pattern-bind        ::= NAME AT
         patternBind: $ => seq($.NAME, $.AT),
-        //   pattern-expr        ::= NAME | con-pattern | STRING | CHAR | number | hole
-        _patternExpr: $ => choice($.NAME, $.conPattern, $.STRING, $.CHAR, $.number, $.hole),
+        //   pattern-expr        ::= NAME | con-pattern | string | CHAR | number | bool | hole
+        _patternExpr: $ => choice($.NAME, $.conPattern, $.string, $.CHAR, $.number, $.bool, $.hole),
         //     con-pattern       ::= identifier con-pattern-params
         conPattern: $ => seq($.identifier, $.conPatternParams),
-        //     con-pattern-parms ::= O-PAREN (field-pattern (COMMA field-pattern)*)? COMMA? C-PAREN
+        //     con-pattern-params ::= O-PAREN (field-pattern (COMMA field-pattern)*)? COMMA? C-PAREN
         conPatternParams: $ =>
             seq(
                 $.O_PAREN,
@@ -236,10 +242,19 @@ module.exports = grammar({
             ),
         //       field-pattern   ::= NAME (COLON pattern)?
         fieldPattern: $ => seq($.NAME, optional(seq($.COLON, $.pattern))),
+        //     list-pattern      ::= O-BRACKET (pattern (COMMA pattern)*)? COMMA? C-BRACKET
+        listPattern: $ =>
+            seq($.O_BRACKET, optional(seq($.pattern, repeat(seq($.COMMA, $.pattern)))), optional($.COMMA), $.C_BRACKET),
         //     hole              ::= UNDERSCORE
         hole: $ => $.UNDERSCORE,
         // number                ::= MINUS? (INT | FLOAT)
         number: $ => seq(optional($.MINUS), choice($.INT, $.FLOAT)),
+        // string                ::= D-QUOTE string-part* D-QUOTE
+        string: $ => seq($.D_QUOTE, repeat($.stringPart), $.D_QUOTE),
+        // string-part           ::= STRING | O-BRACE expr C-BRACE
+        stringPart: $ => choice($.STRING, seq($.O_BRACE, $.expr, $.C_BRACE)),
+        // bool                  ::= TRUE | FALSE
+        bool: $ => choice($.TRUE, $.FALSE),
 
         USE_KEYWORD: _ => 'use',
         TYPE_KEYWORD: _ => 'type',
@@ -256,6 +271,7 @@ module.exports = grammar({
         IN_KEYWORD: _ => 'in',
         MATCH_KEYWORD: _ => 'match',
         PUB_KEYWORD: _ => 'pub',
+        AWAIT_KEYWORD: _ => 'await',
 
         O_PAREN: _ => '(',
         C_PAREN: _ => ')',
@@ -281,10 +297,11 @@ module.exports = grammar({
         EQUALS: _ => '=',
         UNDERSCORE: _ => '_',
         AT: _ => '@',
+        D_QUOTE: _ => '"',
 
         NAME: _ => /[a-zA-Z]([a-zA-Z]|\d)*/,
-        STRING: $ => seq('"', repeat(choice(/(\\\\')/, /[^\\\n\r']/, $._ESCAPE_SEQUENCE)), '"'),
-        CHAR: $ => seq("'", choice(/(\\\\")/, /[^\\\n\r"]/, $._ESCAPE_SEQUENCE), "'"),
+        STRING: $ => prec.right(repeat1(choice(/(\\\\")/, /[^\\\n\r']/, $._ESCAPE_SEQUENCE))),
+        CHAR: $ => seq("'", choice(/(\\\\')/, /[^\\\n\r"]/, $._ESCAPE_SEQUENCE), "'"),
         _ESCAPE_SEQUENCE: _ => choice(/(\\[btnvfr\\'"])/, /u[0-9a-fA-F]{4}/),
         INT: _ => /\d+/,
         FLOAT: _ => /((\d+(\.\d*)?e[+-]?\d+)|(\d+\.\d*)|(\d*\.\d+))/,

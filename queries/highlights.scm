@@ -22,7 +22,6 @@
 (divOp) @operator
 (expOp) @operator
 (modOp) @operator
-(accessOp) @operator
 (eqOp) @operator
 (neOp) @operator
 (geOp) @operator
@@ -36,7 +35,7 @@
 
 (INT) @number
 (FLOAT) @number
-(STRING) @string
+(stringPart) @string
 (CHAR) @string
 
 (USE_KEYWORD) @keyword

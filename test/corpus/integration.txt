@@ -290,7 +290,11 @@ fn foo<T: std::io::Display + U, U>(b: T): Option<U> {
               (COMMA)
               (expr
                 (subExpr
-                  (STRING)))
+                  (string
+                    (D_QUOTE)
+                    (stringPart
+                      (STRING))
+                    (D_QUOTE))))
               (COMMA)
               (expr
                 (subExpr
@@ -298,7 +302,8 @@ fn foo<T: std::io::Display + U, U>(b: T): Option<U> {
               (COMMA)
               (expr
                 (subExpr
-                  (TRUE)))
+                  (bool
+                    (TRUE))))
               (COMMA)
               (expr
                 (subExpr
@@ -387,23 +392,19 @@ fn foo<T: std::io::Display + U, U>(b: T): Option<U> {
               (expr
                 (subExpr
                   (identifier
-                    (NAME)))
-                (accessOp
-                  (PERIOD))
-                (subExpr
-                  (identifier
                     (NAME))
-                  (callOp
-                    (O_PAREN)
-                    (C_PAREN)))
-                (accessOp
-                  (PERIOD))
-                (subExpr
-                  (identifier
-                    (NAME))
-                  (callOp
-                    (O_PAREN)
-                    (C_PAREN))))
+                  (methodCallOp
+                    (PERIOD)
+                    (NAME)
+                    (callOp
+                      (O_PAREN)
+                      (C_PAREN)))
+                  (methodCallOp
+                    (PERIOD)
+                    (NAME)
+                    (callOp
+                      (O_PAREN)
+                      (C_PAREN)))))
               (block
                 (O_BRACE)
                 (expr
@@ -428,22 +429,18 @@ fn foo<T: std::io::Display + U, U>(b: T): Option<U> {
         (expr
           (subExpr
             (identifier
-              (NAME)))
-          (accessOp
-            (PERIOD))
-          (subExpr
-            (identifier
               (NAME))
-            (callOp
-              (O_PAREN)
-              (C_PAREN))
+            (methodCallOp
+              (PERIOD)
+              (NAME)
+              (callOp
+                (O_PAREN)
+                (C_PAREN)))
             (unwrapOp
-              (EXCL)))
-          (accessOp
-            (PERIOD))
-          (subExpr
-            (identifier
-              (NAME))
+              (EXCL))
+            (awaitOp
+              (PERIOD)
+              (AWAIT_KEYWORD))
             (bindOp
               (QMARK)))))
       (varDef
@@ -472,11 +469,9 @@ fn foo<T: std::io::Display + U, U>(b: T): Option<U> {
               (expr
                 (subExpr
                   (identifier
-                    (NAME)))
-                (accessOp
-                  (PERIOD))
-                (subExpr
-                  (identifier
+                    (NAME))
+                  (fieldAccessOp
+                    (PERIOD)
                     (NAME))))
               (block
                 (O_BRACE)
@@ -497,7 +492,11 @@ fn foo<T: std::io::Display + U, U>(b: T): Option<U> {
                       (arg
                         (expr
                           (subExpr
-                            (STRING))))
+                            (string
+                              (D_QUOTE)
+                              (stringPart
+                                (STRING))
+                              (D_QUOTE)))))
                       (C_PAREN))))
                 (C_BRACE))))))
       (expr
@@ -507,15 +506,13 @@ fn foo<T: std::io::Display + U, U>(b: T): Option<U> {
             (expr
               (subExpr
                 (identifier
-                  (NAME)))
-              (accessOp
-                (PERIOD))
-              (subExpr
-                (identifier
                   (NAME))
-                (callOp
-                  (O_PAREN)
-                  (C_PAREN)))
+                (methodCallOp
+                  (PERIOD)
+                  (NAME)
+                  (callOp
+                    (O_PAREN)
+                    (C_PAREN))))
               (ltOp
                 (O_ANGLE))
               (subExpr
@@ -586,11 +583,9 @@ fn foo<T: std::io::Display + U, U>(b: T): Option<U> {
                       (expr
                         (subExpr
                           (identifier
-                            (NAME)))
-                        (accessOp
-                          (PERIOD))
-                        (subExpr
-                          (identifier
+                            (NAME))
+                          (fieldAccessOp
+                            (PERIOD)
                             (NAME)))))
                     (C_PAREN))))
               (C_BRACE)))))
@@ -601,15 +596,13 @@ fn foo<T: std::io::Display + U, U>(b: T): Option<U> {
             (expr
               (subExpr
                 (identifier
-                  (NAME)))
-              (accessOp
-                (PERIOD))
-              (subExpr
-                (identifier
                   (NAME))
-                (callOp
-                  (O_PAREN)
-                  (C_PAREN))))
+                (methodCallOp
+                  (PERIOD)
+                  (NAME)
+                  (callOp
+                    (O_PAREN)
+                    (C_PAREN)))))
             (matchClauses
               (O_BRACE)
               (matchClause
@@ -623,15 +616,13 @@ fn foo<T: std::io::Display + U, U>(b: T): Option<U> {
                   (expr
                     (subExpr
                       (identifier
-                        (NAME)))
-                    (accessOp
-                      (PERIOD))
-                    (subExpr
-                      (identifier
                         (NAME))
-                      (callOp
-                        (O_PAREN)
-                        (C_PAREN)))
+                      (methodCallOp
+                        (PERIOD)
+                        (NAME)
+                        (callOp
+                          (O_PAREN)
+                          (C_PAREN))))
                     (gtOp
                       (C_ANGLE))
                     (subExpr
@@ -685,7 +676,11 @@ fn foo<T: std::io::Display + U, U>(b: T): Option<U> {
               (matchClause
                 (patterns
                   (pattern
-                    (STRING)))
+                    (string
+                      (D_QUOTE)
+                      (stringPart
+                        (STRING))
+                      (D_QUOTE))))
                 (block
                   (O_BRACE)
                   (C_BRACE)))
