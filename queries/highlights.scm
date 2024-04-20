@@ -33,11 +33,6 @@
 (unwrapOp) @operator
 (bindOp) @operator
 
-(INT) @number
-(FLOAT) @number
-(stringPart) @string
-(CHAR) @string
-
 (USE_KEYWORD) @keyword
 (TYPE_KEYWORD) @keyword
 (TRAIT_KEYWORD) @keyword
@@ -70,5 +65,12 @@
   (O_ANGLE) @punctuation.bracket
   (C_ANGLE) @punctuation.bracket)
 
-
 (COMMENT) @comment
+
+(INT) @number
+(FLOAT) @number
+(STRING) @string
+(stringPart ((O_BRACE) @string))
+(stringPart ((C_BRACE) @string))
+(string ((D_QUOTE) @string))
+(CHAR) @string
